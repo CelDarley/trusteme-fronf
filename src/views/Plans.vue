@@ -1,4 +1,3 @@
-
 <template>
   <div class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -122,12 +121,33 @@ const fetchPlans = async () => {
   
   try {
     const response = await api.get('/plans')
-    plans.value = response.data.data || response.data
+    const apiPlans = response.data.data || []
     
-    // Se não houver planos da API, usar planos padrão
-    if (!plans.value.length) {
-      plans.value = getDefaultPlans()
-    }
+    // Transformar os planos da API para o formato esperado pelo componente
+    plans.value = apiPlans.map(plan => ({
+      id: plan.id,
+      name: plan.name,
+      description: plan.description,
+      price: plan.monthly_price,
+      billing_cycle: 'monthly',
+      features: plan.features,
+      featured: plan.id === 2, // Plano Intermediário como destaque
+      is_active: plan.is_active
+    }))
+
+    // Adicionar planos anuais
+    const yearlyPlans = apiPlans.map(plan => ({
+      id: plan.id + 100, // IDs diferentes para planos anuais
+      name: plan.name,
+      description: plan.description,
+      price: plan.annual_price,
+      billing_cycle: 'yearly',
+      features: plan.features,
+      featured: plan.id === 2,
+      is_active: plan.is_active
+    }))
+
+    plans.value = [...plans.value, ...yearlyPlans]
   } catch (err) {
     error.value = 'Erro ao carregar planos. Tente novamente.'
     console.error('Erro ao buscar planos:', err)

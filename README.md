@@ -1,95 +1,27 @@
-# Trust Me - Frontend Vue 3
+# Trust Me - Frontend
 
-Frontend completo em Vue 3 para a plataforma Trust Me, desenvolvido com as mais modernas tecnologias web.
+Frontend da aplicação Trust Me, uma plataforma de gestão de projetos e equipes.
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
-- **Vue 3** - Framework JavaScript progressivo
-- **Vite** - Build tool rápido e moderno
-- **Vue Router** - Roteamento oficial do Vue
-- **Pinia** - Gerenciamento de estado
-- **Tailwind CSS** - Framework CSS utilitário
-- **Axios** - Cliente HTTP para APIs
+- Vue 3
+- Vite
+- Tailwind CSS
+- Pinia (Gerenciamento de Estado)
+- Vue Router
+- Axios
 
-## 📁 Estrutura do Projeto
+## Requisitos
 
-```
-src/
-├── components/          # Componentes reutilizáveis
-│   ├── Header.vue
-│   ├── Footer.vue
-│   ├── Modal.vue
-│   ├── Loader.vue
-│   ├── FormInput.vue
-│   └── PlanCard.vue
-├── views/              # Páginas da aplicação
-│   ├── Home.vue
-│   ├── About.vue
-│   ├── Plans.vue
-│   ├── Contact.vue
-│   ├── Dashboard.vue
-│   ├── Testimonials.vue
-│   ├── Faq.vue
-│   ├── auth/           # Páginas de autenticação
-│   │   ├── Login.vue
-│   │   ├── Register.vue
-│   │   └── ForgotPassword.vue
-│   └── admin/          # Painel administrativo
-│       ├── Admin.vue
-│       ├── Users.vue
-│       ├── Plans.vue
-│       ├── Contacts.vue
-│       ├── Faqs.vue
-│       └── Testimonials.vue
-├── stores/             # Gerenciamento de estado
-│   └── auth.js
-├── services/           # Serviços e APIs
-│   └── api.js
-├── router/             # Configuração de rotas
-│   └── index.js
-└── assets/             # Recursos estáticos
-```
-
-## 🛠️ Funcionalidades
-
-### Autenticação
-- Login e registro de usuários
-- Recuperação de senha
-- Gerenciamento de sessão
-- Proteção de rotas
-
-### Dashboard do Usuário
-- Painel personalizado
-- Gerenciamento de perfil
-- Histórico de atividades
-
-### Painel Administrativo
-- Gerenciamento de usuários
-- Controle de planos
-- Gestão de contatos
-- Administração de FAQs
-- Gerenciamento de depoimentos
-
-### Páginas Públicas
-- Página inicial com apresentação
-- Sobre a empresa
-- Planos e preços
-- Contato
-- Depoimentos
-- FAQ
-
-## ⚙️ Configuração e Instalação
-
-### Pré-requisitos
-- Node.js (versão 16 ou superior)
+- Node.js 16+
 - npm ou yarn
 
-### Instalação
+## Instalação
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/CelDarley/trusteme-fronf.git
-cd trusteme-fronf
+git clone https://github.com/seu-usuario/trustme-front.git
+cd trustme-front
 ```
 
 2. Instale as dependências:
@@ -102,106 +34,34 @@ npm install
 cp .env.example .env
 ```
 
-4. Edite o arquivo `.env` com suas configurações:
-```env
-VITE_API_BASE_URL=http://localhost:8001/api
-VITE_APP_NAME=Trust Me
-```
-
-### Executando o Projeto
-
-#### Desenvolvimento
+4. Inicie o servidor de desenvolvimento:
 ```bash
 npm run dev
 ```
-O projeto estará disponível em `http://localhost:5173`
 
-#### Build para Produção
-```bash
-npm run build
+## Estrutura do Projeto
+
+```
+src/
+  ├── assets/        # Arquivos estáticos
+  ├── components/    # Componentes Vue reutilizáveis
+  ├── router/        # Configuração do Vue Router
+  ├── stores/        # Stores do Pinia
+  ├── services/      # Serviços (API, etc)
+  ├── views/         # Páginas/Views
+  └── App.vue        # Componente raiz
 ```
 
-#### Preview da Build
-```bash
-npm run preview
-```
+## Scripts Disponíveis
 
-## 🔗 Integração com Backend
+- `npm run dev` - Inicia o servidor de desenvolvimento
+- `npm run build` - Compila o projeto para produção
+- `npm run preview` - Visualiza a versão de produção localmente
 
-Este frontend está configurado para integrar com a API Laravel do Trust Me:
-- Base URL: `http://localhost:8001/api`
-- Autenticação via Laravel Sanctum
-- Endpoints para todas as funcionalidades
+## Backend
 
-### Principais Endpoints Utilizados
-- `POST /auth/login` - Login
-- `POST /auth/register` - Registro
-- `GET /user` - Dados do usuário
-- `GET /plans` - Lista de planos
-- `POST /contacts` - Envio de contato
-- `GET /faqs` - FAQs
-- `GET /testimonials` - Depoimentos
+O backend deste projeto está disponível em: [trustme-back](https://github.com/CelDarley/trustme-back)
 
-## 🎨 Design e UX
+## Licença
 
-- Interface moderna e responsiva
-- Design system consistente
-- Componentes reutilizáveis
-- Experiência otimizada para mobile
-- Carregamento otimizado com lazy loading
-
-## 📱 Responsividade
-
-O projeto é totalmente responsivo, funcionando perfeitamente em:
-- Desktop (1024px+)
-- Tablet (768px - 1023px)
-- Mobile (320px - 767px)
-
-## 🔒 Segurança
-
-- Validação de formulários
-- Sanitização de dados
-- Proteção contra XSS
-- Autenticação segura
-- Rotas protegidas
-
-## 🚀 Deploy
-
-### Vercel (Recomendado)
-```bash
-npm run build
-# Upload da pasta dist/ para Vercel
-```
-
-### Netlify
-```bash
-npm run build
-# Upload da pasta dist/ para Netlify
-```
-
-### Servidor Próprio
-```bash
-npm run build
-# Copie o conteúdo da pasta dist/ para seu servidor web
-```
-
-## 📄 Licença
-
-Este projeto é propriedade privada da Trust Me.
-
-## 👥 Contribuição
-
-Para contribuir com o projeto:
-1. Faça um fork
-2. Crie uma branch para sua feature
-3. Commit suas mudanças
-4. Push para a branch
-5. Abra um Pull Request
-
-## 📞 Suporte
-
-Para suporte técnico, entre em contato através do sistema de contato da plataforma.
-
----
-
-**Trust Me** - Sua confiança, nossa prioridade.
+MIT
