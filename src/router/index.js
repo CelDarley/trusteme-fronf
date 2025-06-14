@@ -1,0 +1,152 @@
+
+import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+// Lazy loading das páginas
+const Home = () => import('@/views/Home.vue')
+const Plans = () => import('@/views/Plans.vue')
+const About = () => import('@/views/About.vue')
+const Faq = () => import('@/views/Faq.vue')
+const Testimonials = () => import('@/views/Testimonials.vue')
+const Contact = () => import('@/views/Contact.vue')
+const Login = () => import('@/views/auth/Login.vue')
+const Register = () => import('@/views/auth/Register.vue')
+const ForgotPassword = () => import('@/views/auth/ForgotPassword.vue')
+const Dashboard = () => import('@/views/Dashboard.vue')
+const Admin = () => import('@/views/admin/Admin.vue')
+const AdminUsers = () => import('@/views/admin/Users.vue')
+const AdminPlans = () => import('@/views/admin/Plans.vue')
+const AdminFaqs = () => import('@/views/admin/Faqs.vue')
+const AdminTestimonials = () => import('@/views/admin/Testimonials.vue')
+const AdminContacts = () => import('@/views/admin/Contacts.vue')
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+  },
+  {
+    path: '/planos',
+    name: 'Plans',
+    component: Plans,
+  },
+  {
+    path: '/sobre',
+    name: 'About',
+    component: About,
+  },
+  {
+    path: '/faq',
+    name: 'Faq',
+    component: Faq,
+  },
+  {
+    path: '/depoimentos',
+    name: 'Testimonials',
+    component: Testimonials,
+  },
+  {
+    path: '/contato',
+    name: 'Contact',
+    component: Contact,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: { guest: true },
+  },
+  {
+    path: '/registro',
+    name: 'Register',
+    component: Register,
+    meta: { guest: true },
+  },
+  {
+    path: '/esqueci-senha',
+    name: 'ForgotPassword',
+    component: ForgotPassword,
+    meta: { guest: true },
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+    meta: { requiresAuth: true, requiresAdmin: true },
+    children: [
+      {
+        path: 'usuarios',
+        name: 'AdminUsers',
+        component: AdminUsers,
+      },
+      {
+        path: 'planos',
+        name: 'AdminPlans',
+        component: AdminPlans,
+      },
+      {
+        path: 'faqs',
+        name: 'AdminFaqs',
+        component: AdminFaqs,
+      },
+      {
+        path: 'depoimentos',
+        name: 'AdminTestimonials',
+        component: AdminTestimonials,
+      },
+      {
+        path: 'contatos',
+        name: 'AdminContacts',
+        component: AdminContacts,
+      },
+    ],
+  },
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+
+// Navigation guards
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore()
+  
+  // Fetch user if authenticated but no user data
+  if (authStore.token && !authStore.user) {
+    await authStore.fetchUser()
+  }
+  
+  // Check if route requires authentication
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next('/login')
+    return
+  }
+  
+  // Check if route requires admin
+  if (to.meta.requiresAdmin && !authStore.isAdmin) {
+    next('/dashboard')
+    return
+  }
+  
+  // Redirect authenticated users away from guest pages
+  if (to.meta.guest && authStore.isAuthenticated) {
+    if (authStore.isAdmin) {
+      next('/admin')
+    } else {
+      next('/dashboard')
+    }
+    return
+  }
+  
+  next()
+})
+
+export default router
