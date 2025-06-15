@@ -18,6 +18,8 @@ const AdminPlans = () => import('@/views/admin/Plans.vue')
 const AdminFaqs = () => import('@/views/admin/Faqs.vue')
 const AdminTestimonials = () => import('@/views/admin/Testimonials.vue')
 const AdminContacts = () => import('@/views/admin/Contacts.vue')
+const ContractTypes = () => import('@/views/admin/ContractTypes.vue')
+const Selos = () => import('@/views/admin/Selos.vue')
 
 const routes = [
   {
@@ -104,6 +106,16 @@ const routes = [
         path: 'contatos',
         name: 'AdminContacts',
         component: AdminContacts,
+      },
+      {
+        path: 'contract-types',
+        name: 'admin-contract-types',
+        component: ContractTypes
+      },
+      {
+        path: 'selos',
+        name: 'admin-selos',
+        component: Selos
       },
     ],
   },

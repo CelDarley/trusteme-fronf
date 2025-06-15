@@ -73,6 +73,28 @@
               </svg>
               Contatos
             </router-link>
+
+            <router-link
+              to="/admin/contract-types"
+              active-class="bg-trust-50 text-trust-700 border-trust-500"
+              class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50 border-l-4 border-transparent"
+            >
+              <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              Tipos de Contrato
+            </router-link>
+
+            <router-link
+              to="/admin/selos"
+              active-class="bg-trust-50 text-trust-700 border-trust-500"
+              class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50 border-l-4 border-transparent"
+            >
+              <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+              Selos
+            </router-link>
           </div>
         </nav>
       </div>
@@ -80,10 +102,8 @@
       <!-- Main Content -->
       <div class="flex-1">
         <div class="p-8">
-          <router-view v-if="$route.path !== '/admin'" />
-          
           <!-- Admin Dashboard -->
-          <div v-else>
+          <div v-if="$route.path === '/admin'">
             <div class="mb-8">
               <h1 class="text-3xl font-bold text-gray-900">Dashboard Administrativo</h1>
               <p class="text-gray-600">Visão geral do sistema</p>
@@ -184,14 +204,17 @@
                         </span>
                         <span class="text-sm text-gray-500">
                           Último login: {{ formatDate(user.created_at) }}
-                        </span>
-                      </div>
+                      </span>
+                    </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Child Routes -->
+          <router-view v-else />
         </div>
       </div>
     </div>
@@ -254,25 +277,25 @@ const fetchAdminStats = async () => {
       adminStats.activeSubscriptions = processedUsers.length
     } else {
       console.log('Nenhum histórico encontrado, usando dados simulados')
-      recentUsers.value = [
-        {
-          id: 1,
-          name: 'João Silva',
+    recentUsers.value = [
+      {
+        id: 1,
+        name: 'João Silva',
           email: 'joao@exemplo.com',
           role: 'user',
           created_at: new Date().toISOString(),
           login_count: 0
-        },
-        {
-          id: 2,
-          name: 'Maria Santos',
+      },
+      {
+        id: 2,
+        name: 'Maria Santos',
           email: 'maria@exemplo.com',
           role: 'user',
           created_at: new Date().toISOString(),
           login_count: 0
-        },
-        {
-          id: 3,
+      },
+      {
+        id: 3,
           name: 'Pedro Oliveira',
           email: 'pedro@exemplo.com',
           role: 'user',
