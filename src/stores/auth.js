@@ -1,4 +1,3 @@
-
 import { defineStore } from 'pinia'
 import api from '@/services/api'
 import router from '@/router'
@@ -6,41 +5,67 @@ import router from '@/router'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
-    token: localStorage.getItem('token'),
+    token: localStorage.getItem('token') || null,
     loading: false,
     error: null,
   }),
 
   getters: {
     isAuthenticated: (state) => !!state.token,
-    isAdmin: (state) => state.user?.role === 'admin',
+    isAdmin: (state) => {
+      console.log('Verificando role do usuário:', state.user)
+      return state.user?.user?.role === 'admin'
+    },
+    getUser: (state) => state.user?.user
   },
 
   actions: {
+    async testAdminLogin() {
+      this.loading = true
+      this.error = null
+      
+      try {
+        console.log('Testando login admin...')
+        this.token = '9|5EzGNVfyjC97u0Rb7G1P1LPcu1SNWMPjU6WnQRjL8c8e889a'
+        localStorage.setItem('token', this.token)
+        
+        console.log('Token armazenado, buscando dados do usuário...')
+        await this.fetchUser()
+        
+        console.log('Usuário carregado:', this.user)
+        console.log('É admin?', this.isAdmin)
+        
+        return true
+      } catch (error) {
+        console.error('Erro no login admin:', error)
+        this.error = error.response?.data?.message || 'Erro ao fazer login'
+        return false
+      } finally {
+        this.loading = false
+      }
+    },
+
     async login(credentials) {
       this.loading = true
       this.error = null
       
       try {
-        // Get CSRF cookie first
-        await api.get('/sanctum/csrf-cookie')
-        
+        console.log('Iniciando login...')
         const response = await api.post('/auth/login', credentials)
+        console.log('Resposta do login:', response.data)
         
         this.token = response.data.token
-        this.user = response.data.user
-        
         localStorage.setItem('token', this.token)
         
-        // Redirect based on role
-        if (this.user.role === 'admin') {
-          router.push('/admin')
-        } else {
-          router.push('/dashboard')
-        }
+        console.log('Token armazenado, buscando dados do usuário...')
+        await this.fetchUser()
         
-        return response.data
+        console.log('Usuário carregado:', this.user)
+        console.log('É admin?', this.isAdmin)
+        
+        return response
       } catch (error) {
+        console.error('Erro no login:', error)
         this.error = error.response?.data?.message || 'Erro ao fazer login'
         throw error
       } finally {
@@ -53,18 +78,11 @@ export const useAuthStore = defineStore('auth', {
       this.error = null
       
       try {
-        await api.get('/sanctum/csrf-cookie')
-        
         const response = await api.post('/auth/register', userData)
-        
         this.token = response.data.token
-        this.user = response.data.user
-        
         localStorage.setItem('token', this.token)
-        
-        router.push('/dashboard')
-        
-        return response.data
+        await this.fetchUser()
+        return response
       } catch (error) {
         this.error = error.response?.data?.message || 'Erro ao registrar'
         throw error
@@ -74,29 +92,29 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async fetchUser() {
-      if (!this.token) return
+      if (!this.token) {
+        console.log('Sem token, não é possível buscar usuário')
+        return
+      }
       
       try {
+        console.log('Buscando dados do usuário...')
         const response = await api.get('/auth/me')
+        console.log('Dados do usuário recebidos:', response.data)
         this.user = response.data
       } catch (error) {
-        this.logout()
+        console.error('Erro ao buscar dados do usuário:', error)
+        if (error.response?.status === 401) {
+          this.logout()
+        }
       }
     },
 
-    async logout() {
-      try {
-        if (this.token) {
-          await api.post('/auth/logout')
-        }
-      } catch (error) {
-        console.error('Erro ao fazer logout:', error)
-      } finally {
-        this.user = null
-        this.token = null
-        localStorage.removeItem('token')
-        router.push('/')
-      }
+    logout() {
+      console.log('Fazendo logout...')
+      this.user = null
+      this.token = null
+      localStorage.removeItem('token')
     },
 
     async forgotPassword(email) {

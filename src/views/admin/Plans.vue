@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <div class="mb-8">
@@ -238,10 +237,36 @@ const formatPrice = (price) => {
 
 const fetchPlans = async () => {
   try {
-    const response = await api.get('/admin/plans')
-    plans.value = response.data.data || response.data
+    const response = await api.get('/plans')
+    const apiPlans = response.data.data || []
     
-    // Dados simulados se a API não retornar dados
+    // Transformar os planos da API para o formato esperado pelo componente
+    plans.value = apiPlans.map(plan => ({
+      id: plan.id,
+      name: plan.name,
+      description: plan.description,
+      price: plan.monthly_price,
+      billing_cycle: 'monthly',
+      features: plan.features,
+      active: plan.is_active,
+      featured: plan.id === 2 // Plano Intermediário como destaque
+    }))
+
+    // Adicionar planos anuais
+    const yearlyPlans = apiPlans.map(plan => ({
+      id: plan.id + 100, // IDs diferentes para planos anuais
+      name: plan.name,
+      description: plan.description,
+      price: plan.annual_price,
+      billing_cycle: 'yearly',
+      features: plan.features,
+      active: plan.is_active,
+      featured: plan.id === 2
+    }))
+
+    plans.value = [...plans.value, ...yearlyPlans]
+
+    // Se não houver planos, usar os planos padrão
     if (!plans.value.length) {
       plans.value = [
         {
@@ -329,14 +354,19 @@ const savePlan = async () => {
   
   try {
     const data = {
-      ...planForm,
-      features: planForm.features.filter(f => f.trim() !== '')
+      name: planForm.name,
+      description: planForm.description,
+      monthly_price: planForm.billing_cycle === 'monthly' ? planForm.price : null,
+      annual_price: planForm.billing_cycle === 'yearly' ? planForm.price : null,
+      features: planForm.features.filter(f => f.trim() !== ''),
+      is_active: planForm.active,
+      featured: planForm.featured
     }
     
     if (editingPlan.value) {
-      await api.put(`/admin/plans/${editingPlan.value.id}`, data)
+      await api.put(`/plans/${editingPlan.value.id}`, data)
     } else {
-      await api.post('/admin/plans', data)
+      await api.post('/plans', data)
     }
     
     await fetchPlans()
@@ -354,7 +384,7 @@ const savePlan = async () => {
 const deletePlan = async (plan) => {
   if (confirm(`Tem certeza que deseja excluir o plano ${plan.name}?`)) {
     try {
-      await api.delete(`/admin/plans/${plan.id}`)
+      await api.delete(`/plans/${plan.id}`)
       await fetchPlans()
     } catch (error) {
       console.error('Erro ao excluir plano:', error)

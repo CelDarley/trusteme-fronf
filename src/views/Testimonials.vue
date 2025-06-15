@@ -1,4 +1,3 @@
-
 <template>
   <div class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -130,6 +129,7 @@ const loading = ref(true)
 const error = ref('')
 
 const getInitials = (name) => {
+  if (!name || typeof name !== 'string') return '--'
   return name
     .split(' ')
     .map(word => word.charAt(0))
@@ -144,7 +144,30 @@ const fetchTestimonials = async () => {
   
   try {
     const response = await api.get('/testimonials')
-    testimonials.value = response.data.data || response.data
+    console.log('Resposta da API:', response.data)
+    
+    // Verificar se a resposta tem a estrutura esperada
+    let testimonialsData = []
+    if (response.data) {
+      if (Array.isArray(response.data)) {
+        testimonialsData = response.data
+      } else if (response.data.data && Array.isArray(response.data.data)) {
+        testimonialsData = response.data.data
+      } else if (typeof response.data === 'object') {
+        // Se for um único objeto, converter para array
+        testimonialsData = [response.data]
+      }
+    }
+    
+    // Garantir que todos os campos necessários existam
+    testimonials.value = testimonialsData.map(testimonial => ({
+      id: testimonial?.id || Math.random().toString(36).substr(2, 9),
+      content: testimonial?.content || '',
+      author_name: testimonial?.author_name || '',
+      author_position: testimonial?.author_position || '',
+      company: testimonial?.company || '',
+      rating: parseInt(testimonial?.rating) || 0
+    }))
     
     // Se não houver depoimentos da API, usar depoimentos padrão
     if (!testimonials.value.length) {

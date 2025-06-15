@@ -7,28 +7,34 @@ const api = axios.create({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
-  withCredentials: true,
   timeout: 10000, // 10 segundos de timeout
 })
 
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    console.log('Request:', {
-      method: config.method.toUpperCase(),
+    const token = localStorage.getItem('token')
+    console.log('Token no interceptor:', token)
+    console.log('URL completa:', `${config.baseURL}${config.url}`)
+    
+    if (token) {
+      console.log('Adicionando token ao header:', token)
+      config.headers.Authorization = `Bearer ${token}`
+      console.log('Headers completos:', config.headers)
+    }
+    
+    console.log('Request config:', {
+      method: config.method,
       url: config.url,
       baseURL: config.baseURL,
       headers: config.headers,
-      withCredentials: config.withCredentials
+      data: config.data
     })
-    const authStore = useAuthStore()
-    if (authStore.token) {
-      config.headers.Authorization = `Bearer ${authStore.token}`
-    }
+    
     return config
   },
   (error) => {
-    console.error('Request Error:', error)
+    console.error('Erro no interceptor de request:', error)
     return Promise.reject(error)
   }
 )
@@ -38,8 +44,8 @@ api.interceptors.response.use(
   (response) => {
     console.log('Response:', {
       status: response.status,
-      url: response.config.url,
-      data: response.data
+      data: response.data,
+      headers: response.headers
     })
     return response
   },
@@ -50,7 +56,6 @@ api.interceptors.response.use(
       status: error.response?.status,
       data: error.response?.data,
       message: error.message,
-      code: error.code,
       headers: error.config?.headers
     })
     if (error.response?.status === 401) {

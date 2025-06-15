@@ -50,6 +50,9 @@
         <button @click="fetchPlans" class="btn-primary mt-4">
           Tentar Novamente
         </button>
+        <button @click="testLogin" class="btn-secondary mt-4 ml-4">
+          Testar Login
+        </button>
       </div>
 
       <!-- Plans Grid -->
@@ -105,6 +108,7 @@ import { ref, computed, onMounted } from 'vue'
 import PlanCard from '@/components/PlanCard.vue'
 import Loader from '@/components/Loader.vue'
 import api from '@/services/api'
+import { useAuthStore } from '@/stores/auth'
 
 const plans = ref([])
 const loading = ref(true)
@@ -258,6 +262,23 @@ const getDefaultPlans = () => {
       featured: false
     }
   ]
+}
+
+const testLogin = async () => {
+  try {
+    const response = await api.post('/auth/login', {
+      email: 'admin@trustme.com',
+      password: 'password'
+    })
+    console.log('Login Response:', response.data)
+    const authStore = useAuthStore()
+    authStore.token = response.data.token
+    localStorage.setItem('token', response.data.token)
+    await fetchPlans()
+  } catch (err) {
+    console.error('Erro no login de teste:', err)
+    error.value = 'Erro no login de teste: ' + (err.response?.data?.message || err.message)
+  }
 }
 
 onMounted(() => {

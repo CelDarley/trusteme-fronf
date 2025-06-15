@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <div class="mb-8">
@@ -196,6 +195,7 @@ const testimonialForm = reactive({
 })
 
 const getInitials = (name) => {
+  if (!name || typeof name !== 'string') return '--'
   return name
     .split(' ')
     .map(word => word.charAt(0))
@@ -205,40 +205,76 @@ const getInitials = (name) => {
 }
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('pt-BR')
+  if (!date) return '--'
+  try {
+    return new Date(date).toLocaleDateString('pt-BR')
+  } catch (error) {
+    console.error('Erro ao formatar data:', error)
+    return '--'
+  }
 }
 
 const fetchTestimonials = async () => {
   loading.value = true
   try {
-    const response = await api.get('/admin/testimonials')
-    testimonials.value = response.data.data || response.data
+    const response = await api.get('/testimonials')
+    console.log('Resposta bruta da API:', response)
+    console.log('Dados da resposta:', response.data)
     
-    // Dados simulados se a API não retornar dados
-    if (!testimonials.value.length) {
-      testimonials.value = [
-        {
-          id: 1,
-          content: 'O Trust Me revolucionou a forma como gerenciamos nossos projetos. A interface é intuitiva e as funcionalidades são exatamente o que precisávamos.',
-          author_name: 'Ana Silva',
-          author_position: 'Gerente de Projetos',
-          company: 'TechCorp',
-          rating: 5,
-          created_at: new Date().toISOString()
-        },
-        {
-          id: 2,
-          content: 'Desde que começamos a usar o Trust Me, nossa produtividade aumentou em 40%. A colaboração entre as equipes nunca foi tão eficiente.',
-          author_name: 'Carlos Santos',
-          author_position: 'CEO',
-          company: 'StartupXYZ',
-          rating: 5,
-          created_at: new Date(Date.now() - 86400000).toISOString()
-        }
-      ]
+    // Verificar se a resposta tem a estrutura esperada
+    let testimonialsData = []
+    if (response.data) {
+      if (Array.isArray(response.data)) {
+        testimonialsData = response.data
+      } else if (response.data.data && Array.isArray(response.data.data)) {
+        testimonialsData = response.data.data
+      } else if (typeof response.data === 'object') {
+        // Se for um único objeto, converter para array
+        testimonialsData = [response.data]
+      }
     }
+    
+    console.log('Dados extraídos:', testimonialsData)
+    
+    // Garantir que todos os campos necessários existam
+    testimonials.value = testimonialsData.map(testimonial => {
+      const processed = {
+        id: testimonial?.id || Math.random().toString(36).substr(2, 9),
+        content: testimonial?.content || '',
+        author_name: testimonial?.author_name || '',
+        author_position: testimonial?.author_position || '',
+        company: testimonial?.company || '',
+        rating: parseInt(testimonial?.rating) || 0,
+        created_at: testimonial?.created_at || new Date().toISOString()
+      }
+      console.log('Depoimento processado:', processed)
+      return processed
+    })
+    
+    console.log('Depoimentos finais:', testimonials.value)
   } catch (error) {
     console.error('Erro ao carregar depoimentos:', error)
+    // Em caso de erro, usar depoimentos padrão
+    testimonials.value = [
+      {
+        id: 1,
+        content: 'O Trust Me revolucionou a forma como gerenciamos nossos projetos. A interface é intuitiva e as funcionalidades são exatamente o que precisávamos.',
+        author_name: 'Ana Silva',
+        author_position: 'Gerente de Projetos',
+        company: 'TechCorp',
+        rating: 5,
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 2,
+        content: 'Desde que começamos a usar o Trust Me, nossa produtividade aumentou em 40%. A colaboração entre as equipes nunca foi tão eficiente.',
+        author_name: 'Carlos Santos',
+        author_position: 'CEO',
+        company: 'StartupXYZ',
+        rating: 5,
+        created_at: new Date(Date.now() - 86400000).toISOString()
+      }
+    ]
   } finally {
     loading.value = false
   }
@@ -269,10 +305,20 @@ const saveTestimonial = async () => {
   saving.value = true
   
   try {
+    const data = {
+      author_name: testimonialForm.author_name?.trim() || '',
+      author_position: testimonialForm.author_position?.trim() || '',
+      company: testimonialForm.company?.trim() || '',
+      rating: parseInt(testimonialForm.rating) || 0,
+      content: testimonialForm.content?.trim() || ''
+    }
+    
+    console.log('Dados a serem enviados:', data)
+    
     if (editingTestimonial.value) {
-      await api.put(`/admin/testimonials/${editingTestimonial.value.id}`, testimonialForm)
+      await api.put(`/testimonials/${editingTestimonial.value.id}`, data)
     } else {
-      await api.post('/admin/testimonials', testimonialForm)
+      await api.post('/testimonials', data)
     }
     
     await fetchTestimonials()
@@ -281,6 +327,10 @@ const saveTestimonial = async () => {
     console.error('Erro ao salvar depoimento:', error)
     if (error.response?.data?.errors) {
       errors.value = error.response.data.errors
+    } else {
+      errors.value = {
+        general: 'Erro ao salvar depoimento. Verifique se o backend está rodando.'
+      }
     }
   } finally {
     saving.value = false
@@ -290,7 +340,7 @@ const saveTestimonial = async () => {
 const deleteTestimonial = async (testimonial) => {
   if (confirm(`Tem certeza que deseja excluir o depoimento de ${testimonial.author_name}?`)) {
     try {
-      await api.delete(`/admin/testimonials/${testimonial.id}`)
+      await api.delete(`/testimonials/${testimonial.id}`)
       await fetchTestimonials()
     } catch (error) {
       console.error('Erro ao excluir depoimento:', error)

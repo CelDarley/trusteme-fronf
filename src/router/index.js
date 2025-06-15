@@ -1,4 +1,3 @@
-
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -118,29 +117,39 @@ const router = createRouter({
 // Navigation guards
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
+  console.log('Verificando rota:', to.path)
+  console.log('Usuário autenticado:', authStore.isAuthenticated)
+  console.log('Dados do usuário:', authStore.user)
+  console.log('É admin?', authStore.isAdmin)
   
   // Fetch user if authenticated but no user data
   if (authStore.token && !authStore.user) {
+    console.log('Buscando dados do usuário...')
     await authStore.fetchUser()
   }
   
   // Check if route requires authentication
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    console.log('Rota requer autenticação, redirecionando para login')
     next('/login')
     return
   }
   
   // Check if route requires admin
   if (to.meta.requiresAdmin && !authStore.isAdmin) {
+    console.log('Rota requer admin, redirecionando para dashboard')
     next('/dashboard')
     return
   }
   
   // Redirect authenticated users away from guest pages
   if (to.meta.guest && authStore.isAuthenticated) {
+    console.log('Usuário autenticado tentando acessar página de guest')
     if (authStore.isAdmin) {
+      console.log('Redirecionando admin para painel admin')
       next('/admin')
     } else {
+      console.log('Redirecionando usuário para dashboard')
       next('/dashboard')
     }
     return

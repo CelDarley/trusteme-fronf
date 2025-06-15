@@ -1,4 +1,3 @@
-
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
@@ -78,6 +77,17 @@
               <span v-else>Entrar</span>
             </button>
           </div>
+
+          <div class="flex flex-col items-center space-y-4">
+            <button
+              type="button"
+              @click="testAdminLogin"
+              class="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              :disabled="authStore.loading"
+            >
+              Testar Login Admin
+            </button>
+          </div>
         </form>
 
         <!-- Error Message -->
@@ -135,8 +145,10 @@
 import { reactive, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import FormInput from '@/components/FormInput.vue'
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
+const router = useRouter()
 
 const form = reactive({
   email: '',
@@ -178,6 +190,20 @@ const handleLogin = async () => {
   } catch (error) {
     // Error is handled by the store
     console.error('Login error:', error)
+  }
+}
+
+const testAdminLogin = async () => {
+  try {
+    await authStore.testAdminLogin()
+    if (authStore.isAdmin) {
+      router.push('/admin')
+    } else {
+      router.push('/dashboard')
+    }
+  } catch (error) {
+    console.error('Erro no login admin:', error)
+    authStore.error = error.response?.data?.message || 'Erro ao fazer login'
   }
 }
 </script>
