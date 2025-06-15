@@ -1,4 +1,3 @@
-
 <template>
   <div class="min-h-screen bg-gray-50">
     <div class="flex">
@@ -150,17 +149,23 @@
             </div>
 
             <!-- Recent Activity -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 gap-8">
               <div class="bg-white rounded-lg shadow-sm">
                 <div class="p-6 border-b border-gray-200">
-                  <h2 class="text-lg font-semibold text-gray-900">Usuários Recentes</h2>
+                  <h2 class="text-lg font-semibold text-gray-900">Usuários e Histórico de Login</h2>
                 </div>
                 <div class="p-6">
-                  <div class="space-y-4">
+                  <div v-if="loading" class="text-center py-4">
+                    <p class="text-gray-500">Carregando dados...</p>
+                  </div>
+                  <div v-else-if="!recentUsers || recentUsers.length === 0" class="text-center py-4">
+                    <p class="text-gray-500">Nenhum usuário encontrado</p>
+                  </div>
+                  <div v-else class="space-y-4">
                     <div
                       v-for="user in recentUsers"
                       :key="user.id"
-                      class="flex items-center justify-between"
+                      class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                     >
                       <div class="flex items-center">
                         <div class="w-10 h-10 bg-trust-100 rounded-full flex items-center justify-center mr-3">
@@ -173,31 +178,14 @@
                           <p class="text-sm text-gray-500">{{ user.email }}</p>
                         </div>
                       </div>
-                      <span
-                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                        :class="user.status === 'ativo' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
-                      >
-                        {{ user.status }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bg-white rounded-lg shadow-sm">
-                <div class="p-6 border-b border-gray-200">
-                  <h2 class="text-lg font-semibold text-gray-900">Mensagens Recentes</h2>
-                </div>
-                <div class="p-6">
-                  <div class="space-y-4">
-                    <div
-                      v-for="message in recentMessages"
-                      :key="message.id"
-                      class="border-l-4 border-trust-500 pl-4"
-                    >
-                      <p class="font-medium text-gray-900">{{ message.subject }}</p>
-                      <p class="text-sm text-gray-600">{{ message.name }} - {{ message.email }}</p>
-                      <p class="text-xs text-gray-500">{{ formatDate(message.created_at) }}</p>
+                      <div class="flex items-center space-x-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          Logins: {{ user.login_count }}
+                        </span>
+                        <span class="text-sm text-gray-500">
+                          Último login: {{ formatDate(user.created_at) }}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -222,63 +210,83 @@ const adminStats = reactive({
 })
 
 const recentUsers = ref([])
-const recentMessages = ref([])
+const loading = ref(false)
 
 const formatDate = (date) => {
+  if (!date) return 'N/A'
   return new Date(date).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: '2-digit',
-    year: 'numeric'
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
   })
 }
 
 const fetchAdminStats = async () => {
+  loading.value = true
   try {
-    // Simular dados administrativos
-    adminStats.totalUsers = 1247
-    adminStats.activeSubscriptions = 892
-    adminStats.totalMessages = 156
-    adminStats.monthlyRevenue = 45890
-    
-    recentUsers.value = [
-      {
-        id: 1,
-        name: 'João Silva',
-        email: 'joao@email.com',
-        status: 'ativo'
-      },
-      {
-        id: 2,
-        name: 'Maria Santos',
-        email: 'maria@email.com',
-        status: 'ativo'
-      },
-      {
-        id: 3,
-        name: 'Pedro Costa',
-        email: 'pedro@email.com',
-        status: 'inativo'
-      }
-    ]
-    
-    recentMessages.value = [
-      {
-        id: 1,
-        name: 'Ana Oliveira',
-        email: 'ana@email.com',
-        subject: 'Dúvida sobre planos',
-        created_at: new Date().toISOString()
-      },
-      {
-        id: 2,
-        name: 'Carlos Lima',
-        email: 'carlos@email.com',
-        subject: 'Problema técnico',
-        created_at: new Date(Date.now() - 3600000).toISOString()
-      }
-    ]
+    // Buscar histórico de login
+    const loginHistoryResponse = await api.get('/login-history/all')
+    const loginHistory = loginHistoryResponse.data.data || loginHistoryResponse.data
+
+    console.log('Dados brutos do histórico:', loginHistory) // Debug
+
+    if (loginHistory && loginHistory.length > 0) {
+      // Transformar o histórico de login em lista de usuários recentes
+      const processedUsers = loginHistory.map(history => {
+        const user = history.user || {}
+        return {
+          id: history.user_id,
+          name: user.name || `Usuário ${history.user_id}`,
+          email: user.email || `usuario${history.user_id}@exemplo.com`,
+          role: user.role || 'user',
+          created_at: history.last_login_at || history.created_at,
+          login_count: history.login_count || 1
+        }
+      })
+
+      console.log('Usuários processados:', processedUsers) // Debug
+      recentUsers.value = processedUsers
+
+      // Atualizar estatísticas
+      adminStats.totalUsers = processedUsers.length
+      adminStats.activeSubscriptions = processedUsers.length
+    } else {
+      console.log('Nenhum histórico encontrado, usando dados simulados')
+      recentUsers.value = [
+        {
+          id: 1,
+          name: 'João Silva',
+          email: 'joao@exemplo.com',
+          role: 'user',
+          created_at: new Date().toISOString(),
+          login_count: 0
+        },
+        {
+          id: 2,
+          name: 'Maria Santos',
+          email: 'maria@exemplo.com',
+          role: 'user',
+          created_at: new Date().toISOString(),
+          login_count: 0
+        },
+        {
+          id: 3,
+          name: 'Pedro Oliveira',
+          email: 'pedro@exemplo.com',
+          role: 'user',
+          created_at: new Date().toISOString(),
+          login_count: 0
+        }
+      ]
+    }
+
   } catch (error) {
-    console.error('Erro ao carregar estatísticas admin:', error)
+    console.error('Erro ao carregar estatísticas:', error)
+    recentUsers.value = []
+  } finally {
+    loading.value = false
   }
 }
 

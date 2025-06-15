@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <div class="mb-8">
@@ -76,6 +75,9 @@
                 Criado em
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Logins
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Ações
               </th>
             </tr>
@@ -113,6 +115,9 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {{ formatDate(user.created_at) }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ user.login_count || 0 }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <div class="flex space-x-2">
@@ -282,40 +287,36 @@ const formatDate = (date) => {
 const fetchUsers = async () => {
   loading.value = true
   try {
-    const response = await api.get('/admin/users')
-    users.value = response.data.data || response.data
-    
-    // Dados simulados se a API não retornar dados
-    if (!users.value.length) {
-      users.value = [
-        {
-          id: 1,
-          name: 'João Silva',
-          email: 'joao@email.com',
-          role: 'user',
+    // Buscar histórico de login
+    const loginHistoryResponse = await api.get('/login-history/all')
+    const loginHistory = loginHistoryResponse.data.data || loginHistoryResponse.data
+
+    console.log('Histórico de login:', loginHistory) // Debug
+
+    if (loginHistory && loginHistory.length > 0) {
+      // Transformar o histórico de login em lista de usuários
+      users.value = loginHistory.map(history => {
+        const user = history.user || {}
+        return {
+          id: history.user_id,
+          name: user.name || `Usuário ${history.user_id}`,
+          email: user.email || `usuario${history.user_id}@exemplo.com`,
+          role: user.role || 'user',
           status: 'ativo',
-          created_at: new Date().toISOString()
-        },
-        {
-          id: 2,
-          name: 'Maria Santos',
-          email: 'maria@email.com',
-          role: 'admin',
-          status: 'ativo',
-          created_at: new Date(Date.now() - 86400000).toISOString()
-        },
-        {
-          id: 3,
-          name: 'Pedro Costa',
-          email: 'pedro@email.com',
-          role: 'user',
-          status: 'suspenso',
-          created_at: new Date(Date.now() - 172800000).toISOString()
+          created_at: history.last_login_at || history.created_at,
+          login_count: history.login_count || 1
         }
-      ]
+      })
+    } else {
+      console.log('Nenhum histórico encontrado')
+      users.value = []
     }
+
+    console.log('Usuários processados:', users.value) // Debug
+
   } catch (error) {
     console.error('Erro ao carregar usuários:', error)
+    users.value = []
   } finally {
     loading.value = false
   }

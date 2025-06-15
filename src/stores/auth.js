@@ -52,18 +52,29 @@ export const useAuthStore = defineStore('auth', {
       try {
         console.log('Iniciando login...')
         const response = await api.post('/auth/login', credentials)
-        console.log('Resposta do login:', response.data)
-        
-        this.token = response.data.token
-        localStorage.setItem('token', this.token)
-        
+        const { token, user } = response.data
+
+        // Salvar token
+        localStorage.setItem('token', token)
+        this.token = token
+
+        // Salvar dados do usuário
+        this.user = user
+
+        // Atualizar histórico de login
+        try {
+          await api.post('/login-history/update')
+        } catch (error) {
+          console.error('Erro ao atualizar histórico de login:', error)
+        }
+
         console.log('Token armazenado, buscando dados do usuário...')
         await this.fetchUser()
         
         console.log('Usuário carregado:', this.user)
         console.log('É admin?', this.isAdmin)
         
-        return response
+        return user
       } catch (error) {
         console.error('Erro no login:', error)
         this.error = error.response?.data?.message || 'Erro ao fazer login'
