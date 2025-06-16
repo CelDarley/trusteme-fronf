@@ -1,225 +1,262 @@
-
 <template>
-  <div>
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Gerenciar FAQs</h1>
-      <p class="text-gray-600">Gerencie as perguntas frequentes do site</p>
-    </div>
-
-    <!-- Add FAQ Button -->
-    <div class="mb-6">
-      <button @click="showCreateModal = true" class="btn-primary">
-        Nova Pergunta
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Gerenciar FAQs</h1>
+        <p class="mt-1 text-sm text-gray-600">
+          Adicione, edite ou remova perguntas frequentes
+        </p>
+      </div>
+      <button
+        @click="openCreateModal"
+        class="btn-primary"
+      >
+        Nova FAQ
       </button>
     </div>
 
-    <!-- FAQs List -->
-    <div class="bg-white rounded-lg shadow-sm">
-      <div v-if="loading" class="p-8">
-        <Loader text="Carregando FAQs..." />
+    <!-- Lista de FAQs -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <div v-if="loading" class="p-4 text-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-trust-600 mx-auto"></div>
       </div>
-
-      <div v-else-if="faqs.length === 0" class="p-8 text-center">
-        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <p class="text-gray-500">Nenhuma pergunta encontrada</p>
+      <div v-else-if="error" class="p-4 text-center text-red-600">
+        {{ error }}
       </div>
-
-      <div v-else class="divide-y divide-gray-200">
-        <div
-          v-for="faq in faqs"
-          :key="faq.id"
-          class="p-6 hover:bg-gray-50 transition-colors"
-        >
-          <div class="flex justify-between items-start">
-            <div class="flex-1">
-              <h3 class="text-lg font-medium text-gray-900 mb-2">{{ faq.question }}</h3>
-              <div class="text-gray-600 mb-4" v-html="faq.answer"></div>
-              <div class="flex items-center text-sm text-gray-500">
-                <span>Criado em {{ formatDate(faq.created_at) }}</span>
-                <span v-if="faq.updated_at !== faq.created_at" class="ml-4">
-                  Atualizado em {{ formatDate(faq.updated_at) }}
+      <div v-else>
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Ordem
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Pergunta
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Ações
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="faq in faqs" :key="faq.id" class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ faq.order }}</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="text-sm text-gray-900">{{ faq.question }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
+                  :class="[
+                    'px-2 inline-flex text-xs leading-5 font-semibold rounded-full',
+                    faq.is_active
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  ]"
+                >
+                  {{ faq.is_active ? 'Ativo' : 'Inativo' }}
                 </span>
-              </div>
-            </div>
-            <div class="flex space-x-2 ml-4">
-              <button
-                @click="editFaq(faq)"
-                class="text-trust-600 hover:text-trust-900"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
-              </button>
-              <button
-                @click="deleteFaq(faq)"
-                class="text-red-600 hover:text-red-900"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button
+                  @click="editFaq(faq)"
+                  class="text-trust-600 hover:text-trust-900 mr-4"
+                >
+                  Editar
+                </button>
+                <button
+                  @click="deleteFaq(faq)"
+                  class="text-red-600 hover:text-red-900"
+                >
+                  Excluir
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- Create/Edit FAQ Modal -->
-    <Modal :show="showCreateModal || showEditModal" @close="closeModal" :title="editingFaq ? 'Editar FAQ' : 'Nova FAQ'">
-      <form @submit.prevent="saveFaq" class="space-y-4">
-        <div class="mb-4">
-          <label for="question" class="block text-sm font-medium text-gray-700 mb-2">
-            Pergunta <span class="text-red-500">*</span>
-          </label>
-          <textarea
-            id="question"
-            v-model="faqForm.question"
-            rows="2"
-            required
-            class="input-field resize-none"
-            :class="{ 'border-red-500 focus:ring-red-500': errors.question }"
-            placeholder="Digite a pergunta..."
-          ></textarea>
-          <p v-if="errors.question" class="mt-1 text-sm text-red-600">{{ errors.question }}</p>
-        </div>
-        
-        <div class="mb-4">
-          <label for="answer" class="block text-sm font-medium text-gray-700 mb-2">
-            Resposta <span class="text-red-500">*</span>
-          </label>
-          <textarea
-            id="answer"
-            v-model="faqForm.answer"
-            rows="5"
-            required
-            class="input-field resize-none"
-            :class="{ 'border-red-500 focus:ring-red-500': errors.answer }"
-            placeholder="Digite a resposta..."
-          ></textarea>
-          <p v-if="errors.answer" class="mt-1 text-sm text-red-600">{{ errors.answer }}</p>
-          <p class="mt-1 text-sm text-gray-500">Você pode usar HTML básico para formatação.</p>
-        </div>
-      </form>
-      
-      <template #footer>
-        <div class="flex justify-end space-x-3">
-          <button @click="closeModal" class="btn-secondary">
-            Cancelar
-          </button>
-          <button @click="saveFaq" :disabled="saving" class="btn-primary">
-            {{ saving ? 'Salvando...' : (editingFaq ? 'Atualizar' : 'Criar') }}
-          </button>
-        </div>
-      </template>
-    </Modal>
+    <!-- Modal de Criação/Edição -->
+    <div v-if="showModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+      <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
+        <h2 class="text-xl font-bold mb-4">
+          {{ editingFaq ? 'Editar FAQ' : 'Nova FAQ' }}
+        </h2>
+        <form @submit.prevent="saveFaq" class="space-y-4">
+          <div>
+            <FormInput
+              v-model="faqForm.question"
+              label="Pergunta"
+              type="text"
+              required
+              :error="errors.question"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Resposta
+            </label>
+            <textarea
+              v-model="faqForm.answer"
+              rows="4"
+              class="input-field"
+              :class="{ 'border-red-500': errors.answer }"
+              required
+            ></textarea>
+            <p v-if="errors.answer" class="mt-1 text-sm text-red-600">
+              {{ errors.answer[0] }}
+            </p>
+          </div>
+          <div>
+            <FormInput
+              v-model="faqForm.order"
+              label="Ordem"
+              type="number"
+              required
+              :error="errors.order"
+            />
+          </div>
+          <div>
+            <label class="flex items-center">
+              <input
+                type="checkbox"
+                v-model="faqForm.is_active"
+                class="form-checkbox h-4 w-4 text-trust-600"
+              >
+              <span class="ml-2 text-sm text-gray-700">Ativo</span>
+            </label>
+          </div>
+          <div class="flex justify-end space-x-3 mt-6">
+            <button
+              type="button"
+              @click="closeModal"
+              class="btn-secondary"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="btn-primary"
+              :disabled="saving"
+            >
+              {{ saving ? 'Salvando...' : 'Salvar' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import Loader from '@/components/Loader.vue'
-import Modal from '@/components/Modal.vue'
+import { ref, onMounted } from 'vue'
 import api from '@/services/api'
+import FormInput from '@/components/FormInput.vue'
 
 const faqs = ref([])
 const loading = ref(true)
-const saving = ref(false)
-const showCreateModal = ref(false)
-const showEditModal = ref(false)
+const error = ref(null)
+const showModal = ref(false)
 const editingFaq = ref(null)
+const saving = ref(false)
 const errors = ref({})
 
-const faqForm = reactive({
+const faqForm = ref({
   question: '',
-  answer: ''
+  answer: '',
+  order: 1,
+  is_active: true
 })
-
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('pt-BR')
-}
 
 const fetchFaqs = async () => {
   loading.value = true
   try {
-    const response = await api.get('/admin/faqs')
+    const response = await api.get('/faqs')
     faqs.value = response.data.data || response.data
-    
-    // Dados simulados se a API não retornar dados
-    if (!faqs.value.length) {
-      faqs.value = [
-        {
-          id: 1,
-          question: 'Como posso começar a usar o Trust Me?',
-          answer: 'É muito simples! Basta se registrar gratuitamente em nossa plataforma, confirmar seu email e você já pode começar a criar seus primeiros projetos.',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: 2,
-          question: 'Posso convidar membros da minha equipe?',
-          answer: 'Sim! Você pode convidar quantos membros quiser para colaborar em seus projetos. Cada plano tem um limite específico de usuários.',
-          created_at: new Date(Date.now() - 86400000).toISOString(),
-          updated_at: new Date(Date.now() - 86400000).toISOString()
-        }
-      ]
-    }
-  } catch (error) {
-    console.error('Erro ao carregar FAQs:', error)
+  } catch (err) {
+    console.error('Erro ao carregar FAQs:', err)
+    error.value = 'Erro ao carregar FAQs. Tente novamente.'
   } finally {
     loading.value = false
   }
 }
 
-const editFaq = (faq) => {
-  editingFaq.value = faq
-  faqForm.question = faq.question
-  faqForm.answer = faq.answer
-  showEditModal.value = true
+const openCreateModal = () => {
+  editingFaq.value = null
+  faqForm.value = {
+    question: '',
+    answer: '',
+    order: faqs.value.length + 1,
+    is_active: true
+  }
+  showModal.value = true
 }
 
-const closeModal = () => {
-  showCreateModal.value = false
-  showEditModal.value = false
-  editingFaq.value = null
-  faqForm.question = ''
-  faqForm.answer = ''
-  errors.value = {}
+const editFaq = (faq) => {
+  editingFaq.value = faq
+  faqForm.value = {
+    question: faq.question,
+    answer: faq.answer,
+    order: faq.order,
+    is_active: faq.is_active
+  }
+  showModal.value = true
+}
+
+const deleteFaq = async (faq) => {
+  if (!confirm(`Tem certeza que deseja excluir a FAQ "${faq.question}"?`)) {
+    return
+  }
+
+  try {
+    await api.delete(`/faqs/${faq.id}`)
+    await fetchFaqs()
+  } catch (err) {
+    console.error('Erro ao excluir FAQ:', err)
+    alert('Erro ao excluir FAQ. Tente novamente.')
+  }
 }
 
 const saveFaq = async () => {
-  errors.value = {}
   saving.value = true
-  
+  errors.value = {}
+
   try {
     if (editingFaq.value) {
-      await api.put(`/admin/faqs/${editingFaq.value.id}`, faqForm)
+      await api.put(`/faqs/${editingFaq.value.id}`, faqForm.value)
     } else {
-      await api.post('/admin/faqs', faqForm)
+      await api.post('/faqs', faqForm.value)
     }
-    
+
     await fetchFaqs()
     closeModal()
-  } catch (error) {
-    console.error('Erro ao salvar FAQ:', error)
-    if (error.response?.data?.errors) {
-      errors.value = error.response.data.errors
+  } catch (err) {
+    console.error('Erro ao salvar FAQ:', err)
+    if (err.response?.data?.errors) {
+      errors.value = err.response.data.errors
+    } else {
+      alert('Erro ao salvar FAQ. Tente novamente.')
     }
   } finally {
     saving.value = false
   }
 }
 
-const deleteFaq = async (faq) => {
-  if (confirm(`Tem certeza que deseja excluir esta pergunta?`)) {
-    try {
-      await api.delete(`/admin/faqs/${faq.id}`)
-      await fetchFaqs()
-    } catch (error) {
-      console.error('Erro ao excluir FAQ:', error)
-    }
+const closeModal = () => {
+  showModal.value = false
+  editingFaq.value = null
+  faqForm.value = {
+    question: '',
+    answer: '',
+    order: 1,
+    is_active: true
   }
+  errors.value = {}
 }
 
 onMounted(() => {

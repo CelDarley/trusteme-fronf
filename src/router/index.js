@@ -83,29 +83,19 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true },
     children: [
       {
+        path: '',
+        name: 'admin-dashboard',
+        component: Admin
+      },
+      {
         path: 'usuarios',
-        name: 'AdminUsers',
-        component: AdminUsers,
+        name: 'admin-users',
+        component: AdminUsers
       },
       {
         path: 'planos',
-        name: 'AdminPlans',
-        component: AdminPlans,
-      },
-      {
-        path: 'faqs',
-        name: 'AdminFaqs',
-        component: AdminFaqs,
-      },
-      {
-        path: 'depoimentos',
-        name: 'AdminTestimonials',
-        component: AdminTestimonials,
-      },
-      {
-        path: 'contatos',
-        name: 'AdminContacts',
-        component: AdminContacts,
+        name: 'admin-plans',
+        component: AdminPlans
       },
       {
         path: 'contract-types',
@@ -117,7 +107,22 @@ const routes = [
         name: 'admin-selos',
         component: Selos
       },
-    ],
+      {
+        path: 'faqs',
+        name: 'admin-faqs',
+        component: AdminFaqs
+      },
+      {
+        path: 'depoimentos',
+        name: 'admin-testimonials',
+        component: AdminTestimonials
+      },
+      {
+        path: 'contatos',
+        name: 'admin-contacts',
+        component: AdminContacts
+      }
+    ]
   },
 ]
 
