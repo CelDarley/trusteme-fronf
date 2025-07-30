@@ -1,0 +1,32 @@
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Torre/Castelo -->
+  <g id="tower">
+    <!-- Base da torre -->
+    <rect x="85" y="45" width="30" height="25" fill="#1e3a8a" stroke="#1e3a8a" stroke-width="1"/>
+    
+    <!-- Crenelações no topo -->
+    <rect x="85" y="35" width="30" height="10" fill="#1e3a8a" stroke="#1e3a8a" stroke-width="1"/>
+    <rect x="87" y="35" width="4" height="10" fill="#ffffff"/>
+    <rect x="95" y="35" width="4" height="10" fill="#ffffff"/>
+    <rect x="103" y="35" width="4" height="10" fill="#ffffff"/>
+    <rect x="111" y="35" width="4" height="10" fill="#ffffff"/>
+    
+    <!-- Ondas/Água -->
+    <path d="M 70 65 Q 75 60 80 65 Q 85 70 90 65 Q 95 60 100 65 Q 105 70 110 65 Q 115 60 120 65 Q 125 70 130 65" 
+          stroke="#1e3a8a" stroke-width="2" fill="none"/>
+    <path d="M 70 68 Q 75 63 80 68 Q 85 73 90 68 Q 95 63 100 68 Q 105 73 110 68 Q 115 63 120 68 Q 125 73 130 68" 
+          stroke="#1e3a8a" stroke-width="2" fill="none"/>
+    <path d="M 70 71 Q 75 66 80 71 Q 85 76 90 71 Q 95 66 100 71 Q 105 76 110 71 Q 115 66 120 71 Q 125 76 130 71" 
+          stroke="#1e3a8a" stroke-width="2" fill="none"/>
+  </g>
+  
+  <!-- Texto "Consentir" -->
+  <text x="100" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e3a8a">
+    Consentir
+  </text>
+  
+  <!-- Texto "SELO SEGURO" -->
+  <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="normal" fill="#1e3a8a">
+    SELO SEGURO
+  </text>
+</svg>
