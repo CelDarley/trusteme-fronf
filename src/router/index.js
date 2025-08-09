@@ -20,6 +20,10 @@ const AdminTestimonials = () => import('@/views/admin/Testimonials.vue')
 const AdminContacts = () => import('@/views/admin/Contacts.vue')
 const ContractTypes = () => import('@/views/admin/ContractTypes.vue')
 const Selos = () => import('@/views/admin/Selos.vue')
+const SiteSettings = () => import('@/views/admin/SiteSettings.vue')
+const PaymentSuccess = () => import('@/views/PaymentSuccess.vue')
+const PaymentFailure = () => import('@/views/PaymentFailure.vue')
+const PaymentPending = () => import('@/views/PaymentPending.vue')
 
 const routes = [
   {
@@ -121,8 +125,32 @@ const routes = [
         path: 'contatos',
         name: 'admin-contacts',
         component: AdminContacts
+      },
+      {
+        path: 'site-settings',
+        name: 'admin-site-settings',
+        component: SiteSettings
       }
     ]
+  },
+  // Rotas de pagamento
+  {
+    path: '/payment/success',
+    name: 'PaymentSuccess',
+    component: PaymentSuccess,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/payment/failure',
+    name: 'PaymentFailure',
+    component: PaymentFailure,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/payment/pending',
+    name: 'PaymentPending',
+    component: PaymentPending,
+    meta: { requiresAuth: true },
   },
 ]
 

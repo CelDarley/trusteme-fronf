@@ -95,6 +95,18 @@
               </svg>
               Selos
             </router-link>
+
+            <!-- Novo: Conteúdo da Home -->
+            <router-link
+              to="/admin/site-settings"
+              active-class="bg-trust-50 text-trust-700 border-trust-500"
+              class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50 border-l-4 border-transparent"
+            >
+              <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m0 6v2m0-2a2 2 0 100-4m0 4a2 2 0 110-4" />
+              </svg>
+              Conteúdo da Home
+            </router-link>
           </div>
         </nav>
       </div>

@@ -8,7 +8,10 @@
           <router-link to="/" class="flex items-center space-x-3 logo logo-hover">
             <!-- Logo SVG do Consentir -->
             <img src="/logo.svg" alt="Consentir Logo" class="h-8 w-auto logo-image" />
-            <span class="text-xl font-bold text-trust-600">Consentir</span>
+            <div class="flex flex-col">
+              <span class="text-xl font-bold text-trust-600">{{ siteName || 'Consentir' }}</span>
+              <span v-if="siteSlogan" class="text-xs text-gray-500 leading-none">{{ siteSlogan }}</span>
+            </div>
           </router-link>
         </div>
 
@@ -215,14 +218,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import api from '@/services/api'
 
 const authStore = useAuthStore()
 const mobileMenuOpen = ref(false)
+
+const siteName = ref('')
+const siteSlogan = ref('')
 
 const handleLogout = async () => {
   await authStore.logout()
   mobileMenuOpen.value = false
 }
+
+onMounted(async () => {
+  try {
+    const { data } = await api.get('/site-content')
+    if (data?.success) {
+      siteName.value = data.data['site_name'] || 'Consentir'
+      siteSlogan.value = data.data['site_slogan'] || ''
+    }
+  } catch (e) {
+    console.error('Erro ao carregar conteúdo público:', e)
+  }
+})
 </script>

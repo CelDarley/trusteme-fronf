@@ -243,6 +243,7 @@ const fetchPlans = async () => {
     // Transformar os planos da API para o formato esperado pelo componente
     plans.value = apiPlans.map(plan => ({
       id: plan.id,
+      origId: plan.id,
       name: plan.name,
       description: plan.description,
       price: plan.monthly_price,
@@ -255,6 +256,7 @@ const fetchPlans = async () => {
     // Adicionar planos anuais
     const yearlyPlans = apiPlans.map(plan => ({
       id: plan.id + 100, // IDs diferentes para planos anuais
+      origId: plan.id,
       name: plan.name,
       description: plan.description,
       price: plan.annual_price,
@@ -356,15 +358,17 @@ const savePlan = async () => {
     const data = {
       name: planForm.name,
       description: planForm.description,
-      monthly_price: planForm.billing_cycle === 'monthly' ? planForm.price : null,
-      annual_price: planForm.billing_cycle === 'yearly' ? planForm.price : null,
       features: planForm.features.filter(f => f.trim() !== ''),
-      is_active: planForm.active,
-      featured: planForm.featured
+      is_active: planForm.active
+    }
+    if (planForm.billing_cycle === 'monthly') {
+      data.monthly_price = planForm.price
+    } else if (planForm.billing_cycle === 'yearly') {
+      data.annual_price = planForm.price
     }
     
     if (editingPlan.value) {
-      await api.put(`/plans/${editingPlan.value.id}`, data)
+      await api.put(`/plans/${editingPlan.value.origId || editingPlan.value.id}`, data)
     } else {
       await api.post('/plans', data)
     }

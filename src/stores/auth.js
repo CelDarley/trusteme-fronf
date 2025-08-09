@@ -120,7 +120,7 @@ export const useAuthStore = defineStore('auth', {
         console.log('Buscando dados do usuário...')
         const response = await api.get('/auth/me')
         console.log('Dados do usuário recebidos:', response.data)
-        this.user = response.data
+        this.user = response.data.user
       } catch (error) {
         console.error('Erro ao buscar dados do usuário:', error)
         if (error.response?.status === 401) {

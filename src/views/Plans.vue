@@ -124,8 +124,14 @@ const fetchPlans = async () => {
   error.value = ''
   
   try {
+    console.log('Iniciando busca de planos...')
+    console.log('URL da API:', import.meta.env.VITE_API_BASE_URL)
+    
     const response = await api.get('/plans')
+    console.log('Response da API:', response)
+    
     const apiPlans = response.data.data || []
+    console.log('Planos da API:', apiPlans)
     
     // Transformar os planos da API para o formato esperado pelo componente
     plans.value = apiPlans.map(plan => ({
@@ -152,9 +158,15 @@ const fetchPlans = async () => {
     }))
 
     plans.value = [...plans.value, ...yearlyPlans]
+    console.log('Planos processados:', plans.value)
   } catch (err) {
     error.value = 'Erro ao carregar planos. Tente novamente.'
-    console.error('Erro ao buscar planos:', err)
+    console.error('Erro detalhado ao buscar planos:', {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+      config: err.config
+    })
     // Usar planos padrão em caso de erro
     plans.value = getDefaultPlans()
   } finally {

@@ -6,7 +6,7 @@
           Perguntas Frequentes
         </h1>
         <p class="mt-4 text-lg text-gray-600">
-          Encontre respostas para as dúvidas mais comuns sobre o TrustMe
+          Encontre respostas para as dúvidas mais comuns sobre o Consentir
         </p>
       </div>
 

@@ -66,7 +66,11 @@ api.interceptors.response.use(
     })
     if (error.response?.status === 401) {
       const authStore = useAuthStore()
-      authStore.logout()
+      const url = error.config?.url || ''
+      if (url.includes('/auth/me') || url.includes('/auth/login') || url.includes('/auth/register')) {
+        authStore.logout()
+      }
+      // Caso contrário, não fazemos logout automático
     }
     return Promise.reject(error)
   }

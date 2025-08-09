@@ -77,13 +77,22 @@ const selectPlan = async () => {
   loading.value = true
   
   try {
-    const response = await api.post('/payments/create', {
-      plan_id: props.plan.id
+    const response = await api.post('/payment/create-preference', {
+      plan_id: props.plan.id,
+      billing_cycle: 'monthly' // Pode ser dinâmico baseado na seleção do usuário
     })
     
-    // Redirecionar para o Mercado Pago ou processar pagamento
-    if (response.data.payment_url) {
-      window.location.href = response.data.payment_url
+    if (response.data.success && response.data.data) {
+      const preference = response.data.data
+      
+      // Redirecionar para o Mercado Pago
+      const checkoutUrl = config('mercadopago.environment') === 'test' 
+        ? preference.sandbox_init_point 
+        : preference.init_point
+      
+      window.location.href = checkoutUrl
+    } else {
+      throw new Error('Erro ao criar preferência de pagamento')
     }
   } catch (error) {
     console.error('Erro ao processar pagamento:', error)
