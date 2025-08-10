@@ -1,13 +1,11 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
+import { API_CONFIG } from '@/config/api'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  },
-  timeout: 10000, // 10 segundos de timeout
+  baseURL: API_CONFIG.BASE_URL,
+  headers: API_CONFIG.DEFAULT_HEADERS,
+  timeout: API_CONFIG.TIMEOUT,
 })
 
 // Request interceptor

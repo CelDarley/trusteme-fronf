@@ -5,11 +5,11 @@ import router from './router'
 import App from './App.vue'
 import './style.css'
 import axios from 'axios'
+import { CONFIG } from './config/environment'
 
 async function applySiteMeta() {
   try {
-    const baseURL = import.meta.env.VITE_API_BASE_URL
-    const { data } = await axios.get(`${baseURL}/site-content`)
+    const { data } = await axios.get(`${CONFIG.API_BASE_URL}/site-content`)
     if (data?.success) {
       const name = data.data['site_name'] || 'Consentir'
       const slogan = data.data['site_slogan'] || ''
