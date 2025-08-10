@@ -7,7 +7,7 @@
         <div class="flex-shrink-0">
           <router-link to="/" class="flex items-center space-x-3 logo logo-hover">
             <!-- Logo SVG do Consentir -->
-            <img src="/logo.svg" alt="Consentir Logo" class="h-8 w-auto logo-image" />
+            <img src="/logo.svg" alt="Consentir Logo" class="h-16 w-auto logo-image" />
             <div class="flex flex-col">
               <span class="text-xl font-bold text-trust-600">{{ siteName || 'Consentir' }}</span>
               <span v-if="siteSlogan" class="text-xs text-gray-500 leading-none">{{ siteSlogan }}</span>
