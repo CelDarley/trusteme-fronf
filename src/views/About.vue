@@ -1,15 +1,14 @@
 
 <template>
-  <div>
+  <div v-if="loaded">
     <!-- Hero Section -->
     <section class="bg-trust-600 text-white py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-4xl md:text-5xl font-bold mb-6">
-                      Sobre o Consentir
+          {{ content['about.hero_title'] }}
         </h1>
         <p class="text-xl text-trust-100 max-w-3xl mx-auto">
-          Somos uma empresa dedicada a transformar a forma como as equipes colaboram
-          e gerenciam seus projetos, oferecendo soluções inovadoras e confiáveis.
+          {{ content['about.hero_subtitle'] }}
         </p>
       </div>
     </section>
@@ -19,19 +18,16 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Nossa Missão</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ content['about.mission_title'] }}</h2>
             <p class="text-lg text-gray-600 mb-6">
-              Capacitar empresas de todos os tamanhos com ferramentas intuitivas e poderosas
-              que simplificam a gestão de projetos e potencializam a colaboração em equipe.
+              {{ content['about.mission_text'] }}
             </p>
             <p class="text-lg text-gray-600">
-              Acreditamos que a tecnologia deve ser um facilitador, não um obstáculo.
-              Por isso, desenvolvemos soluções que são ao mesmo tempo sofisticadas
-              e fáceis de usar.
+              {{ content['about.mission_text_2'] }}
             </p>
           </div>
           <div class="bg-trust-50 p-8 rounded-lg">
-            <h3 class="text-xl font-semibold text-trust-800 mb-4">Nossos Valores</h3>
+            <h3 class="text-xl font-semibold text-trust-800 mb-4">{{ content['about.values_title'] }}</h3>
             <ul class="space-y-3">
               <li class="flex items-start">
                 <svg class="w-6 h-6 text-trust-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,10 +63,9 @@
     <section class="py-20 bg-gray-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Nossa Equipe</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ content['about.team_title'] }}</h2>
           <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Profissionais apaixonados por tecnologia e dedicados a criar
-            as melhores soluções para nossos clientes.
+            {{ content['about.team_subtitle'] }}
           </p>
         </div>
 
@@ -124,7 +119,7 @@
     <section class="py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Nossa História</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ content['about.history_title'] }}</h2>
         </div>
 
         <div class="space-y-12">
@@ -198,17 +193,16 @@
     <section class="py-20 bg-trust-600 text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-3xl font-bold mb-4">
-          Faça parte da nossa história
+          {{ content['about.cta_title'] }}
         </h2>
         <p class="text-xl text-trust-100 mb-8 max-w-2xl mx-auto">
-                      Junte-se a milhares de empresas que já confiam no Consentir
-          para gerenciar seus projetos e alcançar seus objetivos.
+          {{ content['about.cta_subtitle'] }}
         </p>
         <router-link
           to="/registro"
           class="bg-white text-trust-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors inline-block"
         >
-          Começar Agora
+          {{ content['about.cta_button'] }}
         </router-link>
       </div>
     </section>
@@ -216,5 +210,22 @@
 </template>
 
 <script setup>
-// About page logic can be added here if needed
+import { ref, onMounted } from 'vue'
+import api from '@/services/api'
+
+const content = ref({})
+const loaded = ref(false)
+
+onMounted(async () => {
+  try {
+    const { data } = await api.get('/site-content')
+    if (data?.success) {
+      content.value = data.data || {}
+    }
+  } catch (e) {
+    console.error('Erro ao carregar conteúdo da página Sobre:', e)
+  } finally {
+    loaded.value = true
+  }
+})
 </script>
