@@ -14,10 +14,10 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-4 animate-fade-in-up animation-delay-600">
               <router-link
-                to="/registro"
+                to="/download-app"
                 class="btn-hero bg-white text-trust-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg text-center"
               >
-                {{ content['home.cta_primary_label'] }}
+                Baixe aqui o aplicativo
               </router-link>
               <router-link
                 to="/planos"
@@ -115,10 +115,10 @@
           {{ content['home.cta_block_subtitle'] }}
         </p>
         <router-link
-          to="/registro"
+          to="/download-app"
           class="btn-hero bg-trust-600 hover:bg-trust-700 text-white font-semibold py-3 px-8 rounded-lg inline-block animate-fade-in-up animation-delay-600"
         >
-          {{ content['home.cta_primary_label'] }}
+          Baixe aqui o aplicativo
         </router-link>
       </div>
     </section>

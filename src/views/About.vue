@@ -296,10 +296,10 @@
           {{ content['about.cta_subtitle'] }}
         </p>
         <router-link
-          to="/registro"
+          to="/download-app"
           class="bg-white text-trust-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors inline-block"
         >
-          {{ content['about.cta_button'] }}
+          Baixe aqui o aplicativo
         </router-link>
       </div>
     </section>

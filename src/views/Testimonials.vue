@@ -109,10 +109,10 @@
                       Junte-se a milhares de empresas que já transformaram sua gestão com o Consentir.
         </p>
         <router-link
-          to="/registro"
-          class="bg-white text-trust-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors inline-block"
+          to="/download-app"
+          class="bg-trust-600 hover:bg-trust-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors inline-block"
         >
-          Começar Agora
+          Baixe aqui o aplicativo
         </router-link>
       </div>
     </div>

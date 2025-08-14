@@ -25,6 +25,7 @@ const OrganizationalIdentity = () => import('@/views/admin/OrganizationalIdentit
 const PaymentSuccess = () => import('@/views/PaymentSuccess.vue')
 const PaymentFailure = () => import('@/views/PaymentFailure.vue')
 const PaymentPending = () => import('@/views/PaymentPending.vue')
+const DownloadApp = () => import('@/views/DownloadApp.vue')
 
 const routes = [
   {
@@ -157,6 +158,12 @@ const routes = [
     name: 'PaymentPending',
     component: PaymentPending,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/download-app',
+    name: 'DownloadApp',
+    component: DownloadApp,
+    meta: { guest: true },
   },
 ]
 
