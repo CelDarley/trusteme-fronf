@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
-// Lazy loading das páginas
+// Importações dos componentes
 const Home = () => import('@/views/Home.vue')
 const Plans = () => import('@/views/Plans.vue')
 const About = () => import('@/views/About.vue')
@@ -21,6 +21,7 @@ const AdminContacts = () => import('@/views/admin/Contacts.vue')
 const ContractTypes = () => import('@/views/admin/ContractTypes.vue')
 const Selos = () => import('@/views/admin/Selos.vue')
 const SiteSettings = () => import('@/views/admin/SiteSettings.vue')
+const OrganizationalIdentity = () => import('@/views/admin/OrganizationalIdentity.vue')
 const PaymentSuccess = () => import('@/views/PaymentSuccess.vue')
 const PaymentFailure = () => import('@/views/PaymentFailure.vue')
 const PaymentPending = () => import('@/views/PaymentPending.vue')
@@ -130,6 +131,11 @@ const routes = [
         path: 'site-settings',
         name: 'admin-site-settings',
         component: SiteSettings
+      },
+      {
+        path: 'identidade-organizacional',
+        name: 'admin-organizational-identity',
+        component: OrganizationalIdentity
       }
     ]
   },
@@ -159,7 +165,6 @@ const router = createRouter({
   routes,
 })
 
-// Navigation guards
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   console.log('Verificando rota:', to.path)

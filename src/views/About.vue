@@ -122,7 +122,17 @@
           <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ content['about.history_title'] }}</h2>
         </div>
 
-        <div class="space-y-12">
+        <!-- História dinâmica -->
+        <div v-if="content['about.history_text']" class="max-w-4xl mx-auto">
+          <div class="bg-gray-50 p-8 rounded-lg">
+            <p class="text-lg text-gray-700 leading-relaxed text-center">
+              {{ content['about.history_text'] }}
+            </p>
+          </div>
+        </div>
+
+        <!-- História estática como fallback -->
+        <div v-else class="space-y-12">
           <div class="flex flex-col md:flex-row items-center gap-8">
             <div class="md:w-1/2">
               <div class="bg-trust-600 text-white p-6 rounded-lg">
