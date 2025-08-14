@@ -1,23 +1,5 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-trust-50 to-trust-100">
-    <!-- Header -->
-    <div class="bg-white shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="flex items-center justify-between">
-          <router-link to="/" class="flex items-center space-x-3">
-            <img src="/src/assets/logo.svg" alt="Trust-me" class="h-8 w-auto" />
-            <span class="text-xl font-bold text-trust-600">Trust-me</span>
-          </router-link>
-          <router-link 
-            to="/" 
-            class="text-trust-600 hover:text-trust-700 font-medium"
-          >
-            ← Voltar ao site
-          </router-link>
-        </div>
-      </div>
-    </div>
-
     <!-- Hero Section -->
     <section class="py-20">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -75,7 +57,7 @@
           <div class="text-center">
             <div class="w-16 h-16 bg-trust-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg class="w-8 h-8 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
               </svg>
             </div>
             <h3 class="text-lg font-semibold text-gray-900 mb-2">Segurança Total</h3>
