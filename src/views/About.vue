@@ -22,9 +22,6 @@
             <p class="text-lg text-gray-600 mb-6">
               {{ content['about.mission_text'] }}
             </p>
-            <p class="text-lg text-gray-600">
-              {{ content['about.mission_text_2'] }}
-            </p>
           </div>
           <div class="bg-trust-50 p-8 rounded-lg">
             <h3 class="text-xl font-semibold text-trust-800 mb-4">{{ content['about.values_title'] }}</h3>
