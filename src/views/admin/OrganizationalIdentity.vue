@@ -43,13 +43,89 @@
               placeholder="Nossos Valores"
             />
           </div>
+          
+          <!-- Valor 1: Consentimento -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Descrição dos Valores</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Valor 1: Consentimento</label>
+            <input 
+              v-model="form['about.value_1_title']" 
+              type="text" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500 mb-2" 
+              placeholder="Título: Consentimento"
+            />
             <textarea 
-              v-model="form['about.values_text']" 
-              rows="4" 
+              v-model="form['about.value_1_description']" 
+              rows="3" 
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500" 
-              placeholder="Descreva os valores da sua organização..."
+              placeholder="Descrição: Base de todos os relacionamentos saudáveis. Acreditamos que o consentimento explícito e documentado é fundamental para relações respeitosas."
+            ></textarea>
+          </div>
+
+          <!-- Valor 2: Segurança Jurídica -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Valor 2: Segurança Jurídica</label>
+            <input 
+              v-model="form['about.value_2_title']" 
+              type="text" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500 mb-2" 
+              placeholder="Título: Segurança Jurídica"
+            />
+            <textarea 
+              v-model="form['about.value_2_description']" 
+              rows="3" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500" 
+              placeholder="Descrição: Proteção legal para ambas as partes. Garantimos que os acordos sejam válidos juridicamente e protejam os direitos de todos os envolvidos."
+            ></textarea>
+          </div>
+
+          <!-- Valor 3: Transparência -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Valor 3: Transparência</label>
+            <input 
+              v-model="form['about.value_3_title']" 
+              type="text" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500 mb-2" 
+              placeholder="Título: Transparência"
+            />
+            <textarea 
+              v-model="form['about.value_3_description']" 
+              rows="3" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500" 
+              placeholder="Descrição: Clareza total em limites, preferências e responsabilidades. Eliminamos mal-entendidos através de comunicação clara e documentada."
+            ></textarea>
+          </div>
+
+          <!-- Valor 4: Respeito -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Valor 4: Respeito</label>
+            <input 
+              v-model="form['about.value_4_title']" 
+              type="text" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500 mb-2" 
+              placeholder="Título: Respeito"
+            />
+            <textarea 
+              v-model="form['about.value_4_description']" 
+              rows="3" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500" 
+              placeholder="Descrição: Valorização da autonomia e escolhas individuais. Respeitamos todas as formas de relacionamento e orientações sexuais."
+            ></textarea>
+          </div>
+
+          <!-- Valor 5: Privacidade -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Valor 5: Privacidade</label>
+            <input 
+              v-model="form['about.value_5_title']" 
+              type="text" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500 mb-2" 
+              placeholder="Título: Privacidade"
+            />
+            <textarea 
+              v-model="form['about.value_5_description']" 
+              rows="3" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500" 
+              placeholder="Descrição: Proteção absoluta de informações pessoais. Garantimos confidencialidade total em todos os acordos e dados."
             ></textarea>
           </div>
         </div>

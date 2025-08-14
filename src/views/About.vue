@@ -24,11 +24,84 @@
             </p>
           </div>
           <div class="bg-trust-50 p-8 rounded-lg">
-            <h3 class="text-xl font-semibold text-trust-800 mb-4">{{ content['about.values_title'] }}</h3>
+            <h3 class="text-xl font-semibold text-trust-800 mb-6 text-center">{{ content['about.values_title'] }}</h3>
             
-            <!-- Valores dinâmicos -->
-            <div v-if="content['about.values_text']" class="text-gray-700">
-              <p class="text-lg leading-relaxed">{{ content['about.values_text'] }}</p>
+            <!-- Valores em cards verticais -->
+            <div v-if="content['about.value_1_title'] && content['about.value_1_description']" class="space-y-6">
+              <!-- Valor 1: Consentimento -->
+              <div class="bg-white rounded-lg p-6 shadow-sm border-l-4 border-trust-500">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-10 h-10 bg-trust-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-5 h-5 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">{{ content['about.value_1_title'] || 'Consentimento' }}</h4>
+                    <p class="text-gray-600">{{ content['about.value_1_description'] || 'Base de todos os relacionamentos saudáveis. Acreditamos que o consentimento explícito e documentado é fundamental para relações respeitosas.' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Valor 2: Segurança Jurídica -->
+              <div v-if="content['about.value_2_title'] && content['about.value_2_description']" class="bg-white rounded-lg p-6 shadow-sm border-l-4 border-trust-500">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-10 h-10 bg-trust-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-5 h-5 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">{{ content['about.value_2_title'] || 'Segurança Jurídica' }}</h4>
+                    <p class="text-gray-600">{{ content['about.value_2_description'] || 'Proteção legal para ambas as partes. Garantimos que os acordos sejam válidos juridicamente e protejam os direitos de todos os envolvidos.' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Valor 3: Transparência -->
+              <div v-if="content['about.value_3_title'] && content['about.value_3_description']" class="bg-white rounded-lg p-6 shadow-sm border-l-4 border-trust-500">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-10 h-10 bg-trust-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-5 h-5 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">{{ content['about.value_3_title'] || 'Transparência' }}</h4>
+                    <p class="text-gray-600">{{ content['about.value_3_description'] || 'Clareza total em limites, preferências e responsabilidades. Eliminamos mal-entendidos através de comunicação clara e documentada.' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Valor 4: Respeito -->
+              <div v-if="content['about.value_4_title'] && content['about.value_4_description']" class="bg-white rounded-lg p-6 shadow-sm border-l-4 border-trust-500">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-10 h-10 bg-trust-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-5 h-5 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">{{ content['about.value_4_title'] || 'Respeito' }}</h4>
+                    <p class="text-gray-600">{{ content['about.value_4_description'] || 'Valorização da autonomia e escolhas individuais. Respeitamos todas as formas de relacionamento e orientações sexuais.' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Valor 5: Privacidade -->
+              <div v-if="content['about.value_5_title'] && content['about.value_5_description']" class="bg-white rounded-lg p-6 shadow-sm border-l-4 border-trust-500">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 w-10 h-10 bg-trust-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-5 h-5 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">{{ content['about.value_5_title'] || 'Privacidade' }}</h4>
+                    <p class="text-gray-600">{{ content['about.value_5_description'] || 'Proteção absoluta de informações pessoais. Garantimos confidencialidade total em todos os acordos e dados.' }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <!-- Valores estáticos como fallback -->
