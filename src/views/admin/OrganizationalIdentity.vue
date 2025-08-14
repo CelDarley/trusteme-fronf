@@ -77,6 +77,15 @@
               placeholder="Descreva sua equipe..."
             ></textarea>
           </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Texto Detalhado da Equipe</label>
+            <textarea 
+              v-model="form['about.team_text']" 
+              rows="6" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-trust-500" 
+              placeholder="Descreva detalhadamente sua equipe, valores e cultura organizacional..."
+            ></textarea>
+          </div>
         </div>
       </section>
 

@@ -28,7 +28,14 @@
           </div>
           <div class="bg-trust-50 p-8 rounded-lg">
             <h3 class="text-xl font-semibold text-trust-800 mb-4">{{ content['about.values_title'] }}</h3>
-            <ul class="space-y-3">
+            
+            <!-- Valores dinâmicos -->
+            <div v-if="content['about.values_text']" class="text-gray-700">
+              <p class="text-lg leading-relaxed">{{ content['about.values_text'] }}</p>
+            </div>
+            
+            <!-- Valores estáticos como fallback -->
+            <ul v-else class="space-y-3">
               <li class="flex items-start">
                 <svg class="w-6 h-6 text-trust-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -70,7 +77,17 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+          <!-- Equipe dinâmica -->
+          <div v-if="content['about.team_text']" class="col-span-3">
+            <div class="bg-white rounded-lg p-8 text-center shadow-sm">
+              <div class="max-w-4xl mx-auto">
+                <p class="text-lg text-gray-700 leading-relaxed">{{ content['about.team_text'] }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Equipe estática como fallback -->
+          <div v-else class="bg-white rounded-lg p-6 text-center shadow-sm">
             <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
               <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -84,7 +101,7 @@
             </p>
           </div>
 
-          <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+          <div v-else class="bg-white rounded-lg p-6 text-center shadow-sm">
             <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
               <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -98,7 +115,7 @@
             </p>
           </div>
 
-          <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+          <div v-else class="bg-white rounded-lg p-6 text-center shadow-sm">
             <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
               <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
