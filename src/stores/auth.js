@@ -81,6 +81,78 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async loginWithGoogle() {
+      this.loading = true
+      this.error = null
+      
+      try {
+        console.log('Iniciando login com Google...')
+        
+        // Redirecionar para o backend que fará o OAuth
+        const googleAuthUrl = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/auth/google`
+        window.location.href = googleAuthUrl
+        
+      } catch (error) {
+        console.error('Erro ao iniciar login com Google:', error)
+        this.error = 'Erro ao conectar com Google'
+        this.loading = false
+      }
+    },
+
+    async handleGoogleCallback(code) {
+      this.loading = true
+      this.error = null
+      
+      try {
+        console.log('Processando callback do Google...')
+        
+        // Fazer requisição para o backend processar o callback
+        const response = await api.get(`/auth/google/callback?code=${code}`)
+        const { token, user } = response.data
+
+        // Salvar token
+        localStorage.setItem('token', token)
+        this.token = token
+
+        // Salvar dados do usuário
+        this.user = user
+
+        // Atualizar histórico de login
+        try {
+          await api.post('/login-history/update')
+        } catch (error) {
+          console.error('Erro ao atualizar histórico de login:', error)
+        }
+
+        console.log('Usuário logado via Google:', this.user)
+        
+        // Redirecionar baseado no role
+        if (this.isAdmin) {
+          router.push('/admin')
+        } else {
+          router.push('/dashboard')
+        }
+        
+        return user
+      } catch (error) {
+        console.error('Erro no callback do Google:', error)
+        this.error = error.response?.data?.message || 'Erro ao autenticar com Google'
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async checkGoogleConnection() {
+      try {
+        const response = await api.get('/auth/google/status')
+        return response.data
+      } catch (error) {
+        console.error('Erro ao verificar conexão com Google:', error)
+        return { configured: false }
+      }
+    },
+
     async register(userData) {
       this.loading = true
       this.error = null

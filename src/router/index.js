@@ -11,6 +11,7 @@ const Contact = () => import('@/views/Contact.vue')
 const Login = () => import('@/views/auth/Login.vue')
 const Register = () => import('@/views/auth/Register.vue')
 const ForgotPassword = () => import('@/views/auth/ForgotPassword.vue')
+const GoogleCallback = () => import('@/views/auth/GoogleCallback.vue')
 const Dashboard = () => import('@/views/Dashboard.vue')
 const Admin = () => import('@/views/admin/Admin.vue')
 const AdminUsers = () => import('@/views/admin/Users.vue')
@@ -74,6 +75,12 @@ const routes = [
     path: '/esqueci-senha',
     name: 'ForgotPassword',
     component: ForgotPassword,
+    meta: { guest: true },
+  },
+  {
+    path: '/auth/google/callback',
+    name: 'GoogleCallback',
+    component: GoogleCallback,
     meta: { guest: true },
   },
   {
