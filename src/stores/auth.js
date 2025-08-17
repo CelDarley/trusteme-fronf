@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import api from '@/services/api'
 import router from '@/router'
+import { API_CONFIG } from '@/config/api'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -87,11 +88,9 @@ export const useAuthStore = defineStore('auth', {
       
       try {
         console.log('Iniciando login com Google...')
-        
-        // Redirecionar para o backend que fará o OAuth
-        const googleAuthUrl = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/auth/google`
-        window.location.href = googleAuthUrl
-        
+        // Usar a BASE_URL detectada pelo ambiente (produção: https://consentir.catenasystem.com.br/api)
+        const googleAuthUrl = `${API_CONFIG.BASE_URL}/auth/google`
+        window.location.assign(googleAuthUrl)
       } catch (error) {
         console.error('Erro ao iniciar login com Google:', error)
         this.error = 'Erro ao conectar com Google'
