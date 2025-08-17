@@ -20,8 +20,8 @@ Frontend da aplicação Trust Me, uma plataforma de gestão de projetos e equipe
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/trustme-front.git
-cd trustme-front
+git clone https://github.com/CelDarley/trusteme-fronf.git
+cd trustme-fronf
 ```
 
 2. Instale as dependências:
@@ -32,6 +32,16 @@ npm install
 3. Configure as variáveis de ambiente:
 ```bash
 cp .env.example .env
+```
+
+Exemplo (.env):
+```
+# Backend API
+VITE_API_BASE_URL=https://consentir.catenasystem.com.br/api
+
+# Se for necessário expor o Client ID no frontend para um fluxo direto (não usado atualmente)
+VITE_GOOGLE_CLIENT_ID=
+VITE_GOOGLE_REDIRECT_URI=https://consentir.catenasystem.com.br/auth/google/callback
 ```
 
 4. Inicie o servidor de desenvolvimento:
