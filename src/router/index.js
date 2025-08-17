@@ -27,6 +27,8 @@ const PaymentSuccess = () => import('@/views/PaymentSuccess.vue')
 const PaymentFailure = () => import('@/views/PaymentFailure.vue')
 const PaymentPending = () => import('@/views/PaymentPending.vue')
 const DownloadApp = () => import('@/views/DownloadApp.vue')
+const PrivacyPolicy = () => import('@/views/PrivacyPolicy.vue')
+const TermsOfService = () => import('@/views/TermsOfService.vue')
 
 const routes = [
   {
@@ -170,6 +172,18 @@ const routes = [
     path: '/download-app',
     name: 'DownloadApp',
     component: DownloadApp,
+    meta: { guest: true },
+  },
+  {
+    path: '/politica-privacidade',
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicy,
+    meta: { guest: true },
+  },
+  {
+    path: '/termos-servico',
+    name: 'TermsOfService',
+    component: TermsOfService,
     meta: { guest: true },
   },
 ]

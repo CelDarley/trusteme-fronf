@@ -91,12 +91,12 @@
             © {{ new Date().getFullYear() }} Consentir. Todos os direitos reservados.
           </p>
           <div class="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" class="text-gray-300 hover:text-white text-sm transition-colors">
+            <router-link to="/politica-privacidade" class="text-gray-300 hover:text-white text-sm transition-colors">
               Política de Privacidade
-            </a>
-            <a href="#" class="text-gray-300 hover:text-white text-sm transition-colors">
+            </router-link>
+            <router-link to="/termos-servico" class="text-gray-300 hover:text-white text-sm transition-colors">
               Termos de Uso
-            </a>
+            </router-link>
           </div>
         </div>
       </div>

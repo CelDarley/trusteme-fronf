@@ -1,10 +1,10 @@
 // Configuração do Google OAuth
 export const GOOGLE_CONFIG = {
-  // Client ID do Google OAuth (será configurado no .env)
-  CLIENT_ID: import.meta.env.VITE_GOOGLE_CLIENT_ID || 'your_google_client_id_here',
+  // Client ID do Google OAuth para produção
+  CLIENT_ID: '580799203729-ehnh31mlhgjoqm5jrjf4moj9g8i4s4l7.apps.googleusercontent.com',
   
-  // URL de redirecionamento após autenticação
-  REDIRECT_URI: import.meta.env.VITE_GOOGLE_REDIRECT_URI || 'http://localhost:5173/auth/google/callback',
+  // URL de redirecionamento após autenticação (produção)
+  REDIRECT_URI: 'https://consentir.catenasystem.com.br/auth/google/callback',
   
   // Escopo das permissões solicitadas
   SCOPE: 'email profile',

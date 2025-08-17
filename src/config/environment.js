@@ -6,9 +6,9 @@ const ENV = {
     APP_NAME: 'Trust-me (Dev)',
   },
   
-  // Produção - URL da Digital Ocean (domínio + porta 8000)
+  // Produção - URL da Digital Ocean
   PRODUCTION: {
-    API_BASE_URL: 'https://consentir.catenasystem.com.br:8000/api',
+    API_BASE_URL: 'https://consentir.catenasystem.com.br/api',
     APP_NAME: 'Trust-me',
   },
   
