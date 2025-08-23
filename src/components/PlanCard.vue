@@ -86,7 +86,7 @@ const selectPlan = async () => {
       const preference = response.data.data
       
       // Redirecionar para o Mercado Pago
-      const checkoutUrl = config('mercadopago.environment') === 'test' 
+      const checkoutUrl = import.meta.env.VITE_MERCADO_PAGO_ENV === 'sandbox'
         ? preference.sandbox_init_point 
         : preference.init_point
       

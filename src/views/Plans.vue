@@ -223,55 +223,6 @@ const getDefaultPlans = () => {
         'API personalizada'
       ],
       featured: false
-    },
-    // Planos anuais
-    {
-      id: 4,
-      name: 'Básico',
-      price: '23.92',
-      billing_cycle: 'yearly',
-      description: 'Ideal para pequenas equipes',
-      features: [
-        'Até 5 usuários',
-        '10 projetos ativos',
-        'Suporte por email',
-        '5GB de armazenamento',
-        'Relatórios básicos'
-      ],
-      featured: false
-    },
-    {
-      id: 5,
-      name: 'Intermediário',
-      price: '39.92',
-      billing_cycle: 'yearly',
-      description: 'Perfeito para equipes em crescimento',
-      features: [
-        'Até 15 usuários',
-        'Projetos ilimitados',
-        'Suporte prioritário',
-        '50GB de armazenamento',
-        'Relatórios avançados',
-        'Integrações básicas'
-      ],
-      featured: true
-    },
-    {
-      id: 6,
-      name: 'Plus',
-      price: '55.92',
-      billing_cycle: 'yearly',
-      description: 'Para empresas que precisam do máximo',
-      features: [
-        'Usuários ilimitados',
-        'Projetos ilimitados',
-        'Suporte 24/7',
-        '200GB de armazenamento',
-        'Relatórios personalizados',
-        'Todas as integrações',
-        'API personalizada'
-      ],
-      featured: false
     }
   ]
 }
