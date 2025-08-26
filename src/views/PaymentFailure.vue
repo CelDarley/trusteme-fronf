@@ -57,7 +57,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 const goToPlans = () => {
-  router.push('/plans')
+  router.push('/planos')
 }
 
 const goToDashboard = () => {
@@ -65,6 +65,6 @@ const goToDashboard = () => {
 }
 
 const contactSupport = () => {
-  router.push('/contact')
+  router.push('/contato')
 }
 </script> 

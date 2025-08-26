@@ -62,7 +62,7 @@ const goToDashboard = () => {
 }
 
 const goToPlans = () => {
-  router.push('/plans')
+  router.push('/planos')
 }
 
 const loadSubscription = async () => {

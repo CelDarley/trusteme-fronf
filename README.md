@@ -42,6 +42,8 @@ VITE_API_BASE_URL=https://consentir.catenasystem.com.br/api
 # Se for necessário expor o Client ID no frontend para um fluxo direto (não usado atualmente)
 VITE_GOOGLE_CLIENT_ID=
 VITE_GOOGLE_REDIRECT_URI=https://consentir.catenasystem.com.br/auth/google/callback
+
+VITE_MERCADO_PAGO_ENV=sandbox
 ```
 
 4. Inicie o servidor de desenvolvimento:
