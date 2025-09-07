@@ -182,6 +182,9 @@ const handleLogin = async () => {
       password: form.password,
       remember: form.remember
     })
+    
+    // Redirecionar após login bem-sucedido
+    router.push('/')
   } catch (error) {
     // Error is handled by the store
     console.error('Login error:', error)
@@ -199,11 +202,7 @@ const handleGoogleLogin = async () => {
 const testAdminLogin = async () => {
   try {
     await authStore.testAdminLogin()
-    if (authStore.isAdmin) {
-      router.push('/admin')
-    } else {
-      router.push('/dashboard')
-    }
+    router.push('/')
   } catch (error) {
     console.error('Erro no login admin:', error)
     authStore.error = error.response?.data?.message || 'Erro ao fazer login'

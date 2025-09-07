@@ -7,8 +7,7 @@
         <div class="col-span-1 md:col-span-2">
           <h3 class="text-2xl font-bold text-white mb-4">Consentir</h3>
           <p class="text-gray-300 mb-4">
-            Sua plataforma de confiança para gerenciamento de projetos e colaboração em equipe.
-            Oferecemos soluções completas para empresas de todos os tamanhos.
+            Sua plataforma de confiança para garantir relacionamentos seguros.
           </p>
           <div class="flex space-x-4">
             <a href="#" class="text-gray-300 hover:text-white transition-colors">

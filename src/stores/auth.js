@@ -125,13 +125,6 @@ export const useAuthStore = defineStore('auth', {
 
         console.log('Usuário logado via Google:', this.user)
         
-        // Redirecionar baseado no role
-        if (this.isAdmin) {
-          router.push('/admin')
-        } else {
-          router.push('/dashboard')
-        }
-        
         return user
       } catch (error) {
         console.error('Erro no callback do Google:', error)

@@ -172,19 +172,16 @@ const routes = [
     path: '/download-app',
     name: 'DownloadApp',
     component: DownloadApp,
-    meta: { guest: true },
   },
   {
     path: '/politica-privacidade',
     name: 'PrivacyPolicy',
     component: PrivacyPolicy,
-    meta: { guest: true },
   },
   {
     path: '/termos-servico',
     name: 'TermsOfService',
     component: TermsOfService,
-    meta: { guest: true },
   },
 ]
 
@@ -223,13 +220,8 @@ router.beforeEach(async (to, from, next) => {
   // Redirect authenticated users away from guest pages
   if (to.meta.guest && authStore.isAuthenticated) {
     console.log('Usuário autenticado tentando acessar página de guest')
-    if (authStore.isAdmin) {
-      console.log('Redirecionando admin para painel admin')
-      next('/admin')
-    } else {
-      console.log('Redirecionando usuário para dashboard')
-      next('/dashboard')
-    }
+    console.log('Redirecionando para home')
+    next('/')
     return
   }
   

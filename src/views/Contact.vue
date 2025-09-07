@@ -45,37 +45,36 @@
 
             <div class="mb-4">
               <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">
-                Assunto <span class="text-red-500">*</span>
+                Assunto
               </label>
               <select
                 id="subject"
                 v-model="form.subject"
                 required
-                class="input-field"
-                :class="{ 'border-red-500 focus:ring-red-500': errors.subject }"
+                class="w-full input-field"
+                :class="{ 'border-red-500': errors.subject }"
               >
                 <option value="">Selecione um assunto</option>
                 <option value="suporte">Suporte Técnico</option>
                 <option value="vendas">Vendas</option>
-                <option value="parceria">Parcerias</option>
+                <option value="parcerias">Parcerias</option>
                 <option value="feedback">Feedback</option>
-                <option value="outro">Outro</option>
               </select>
               <p v-if="errors.subject" class="mt-1 text-sm text-red-600">{{ errors.subject }}</p>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-6">
               <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
-                Mensagem <span class="text-red-500">*</span>
+                Mensagem
               </label>
               <textarea
                 id="message"
                 v-model="form.message"
                 rows="5"
                 required
+                class="w-full input-field"
+                :class="{ 'border-red-500': errors.message }"
                 placeholder="Descreva sua dúvida ou solicitação..."
-                class="input-field resize-none"
-                :class="{ 'border-red-500 focus:ring-red-500': errors.message }"
               ></textarea>
               <p v-if="errors.message" class="mt-1 text-sm text-red-600">{{ errors.message }}</p>
             </div>
@@ -123,15 +122,15 @@
           <div class="bg-white rounded-lg shadow-sm p-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Informações de Contato</h2>
             
-            <div class="space-y-6">
+            <div class="space-y-6" v-if="contactInfo">
               <div class="flex items-start">
                 <svg class="h-6 w-6 text-trust-600 mr-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                 </svg>
                 <div>
                   <h3 class="font-semibold text-gray-900">Email</h3>
-                  <p class="text-gray-600">contato@trustme.com</p>
-                  <p class="text-gray-600">suporte@trustme.com</p>
+                  <p class="text-gray-600">{{ contactInfo.contact_email_primary || 'contato@trustme.com' }}</p>
+                  <p class="text-gray-600">{{ contactInfo.contact_email_support || 'suporte@trustme.com' }}</p>
                 </div>
               </div>
 
@@ -141,8 +140,8 @@
                 </svg>
                 <div>
                   <h3 class="font-semibold text-gray-900">Telefone</h3>
-                  <p class="text-gray-600">(11) 99999-9999</p>
-                  <p class="text-gray-600">(11) 3333-4444</p>
+                  <p class="text-gray-600">{{ contactInfo.contact_phone_primary || '(11) 99999-9999' }}</p>
+                  <p class="text-gray-600">{{ contactInfo.contact_phone_secondary || '(11) 3333-4444' }}</p>
                 </div>
               </div>
 
@@ -153,11 +152,7 @@
                 </svg>
                 <div>
                   <h3 class="font-semibold text-gray-900">Endereço</h3>
-                  <p class="text-gray-600">
-                    Av. Paulista, 1000<br>
-                    São Paulo, SP - 01310-100<br>
-                    Brasil
-                  </p>
+                  <div class="text-gray-600 whitespace-pre-line">{{ contactInfo.contact_address || 'Av. Paulista, 1000\nSão Paulo, SP - 01310-100\nBrasil' }}</div>
                 </div>
               </div>
 
@@ -167,11 +162,7 @@
                 </svg>
                 <div>
                   <h3 class="font-semibold text-gray-900">Horário de Atendimento</h3>
-                  <p class="text-gray-600">
-                    Segunda a Sexta: 9h às 18h<br>
-                    Sábado: 9h às 12h<br>
-                    Domingo: Fechado
-                  </p>
+                  <div class="text-gray-600 whitespace-pre-line">{{ contactInfo.contact_hours || 'Segunda a Sexta: 9h às 18h\nSábado: 9h às 12h\nDomingo: Fechado' }}</div>
                 </div>
               </div>
             </div>
@@ -199,7 +190,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import FormInput from '@/components/FormInput.vue'
 import api from '@/services/api'
 
@@ -215,6 +206,7 @@ const errors = ref({})
 const loading = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
+const contactInfo = ref({})
 
 const validateForm = () => {
   errors.value = {}
@@ -238,6 +230,19 @@ const validateForm = () => {
   }
   
   return Object.keys(errors.value).length === 0
+}
+
+const loadContactInfo = async () => {
+  try {
+    console.log('Carregando informações de contato...')
+    const { data } = await api.get('/site-content')
+    console.log('Resposta da API:', data)
+      if (data?.success) {
+    contactInfo.value = data.data || {}
+  }
+  } catch (error) {
+    console.error('Erro ao carregar informações de contato:', error)
+  }
 }
 
 const submitForm = async () => {
@@ -267,4 +272,8 @@ const submitForm = async () => {
     loading.value = false
   }
 }
+
+onMounted(() => {
+  loadContactInfo()
+})
 </script>

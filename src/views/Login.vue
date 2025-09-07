@@ -83,7 +83,7 @@ const handleSubmit = async () => {
   
   try {
     await authStore.login(form.value)
-    router.push('/admin')
+    router.push('/')
   } catch (error) {
     if (error.response?.data?.errors) {
       errors.value = error.response.data.errors

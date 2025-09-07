@@ -88,11 +88,7 @@ onMounted(async () => {
 
     // Redirecionar após um breve delay
     setTimeout(() => {
-      if (authStore.isAdmin) {
-        router.push('/admin')
-      } else {
-        router.push('/dashboard')
-      }
+      router.push('/')
     }, 2000)
 
   } catch (err) {
