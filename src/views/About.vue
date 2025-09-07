@@ -157,47 +157,49 @@
           </div>
           
           <!-- Equipe estática como fallback -->
-          <div v-else class="bg-white rounded-lg p-6 text-center shadow-sm">
-            <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-              </svg>
+          <template v-else>
+            <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+              <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Ana Silva</h3>
+              <p class="text-trust-600 mb-3">CEO & Fundadora</p>
+              <p class="text-gray-600 text-sm">
+                15 anos de experiência em gestão de projetos e liderança de equipes.
+                Visionária por trás da criação do Consentir.
+              </p>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Ana Silva</h3>
-            <p class="text-trust-600 mb-3">CEO & Fundadora</p>
-            <p class="text-gray-600 text-sm">
-              15 anos de experiência em gestão de projetos e liderança de equipes.
-              Visionária por trás da criação do Consentir.
-            </p>
-          </div>
 
-          <div v-else class="bg-white rounded-lg p-6 text-center shadow-sm">
-            <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-              </svg>
+            <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+              <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Carlos Santos</h3>
+              <p class="text-trust-600 mb-3">CTO</p>
+              <p class="text-gray-600 text-sm">
+                Especialista em arquitetura de software e desenvolvimento de sistemas escaláveis.
+                Responsável pela excelência técnica da plataforma.
+              </p>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Carlos Santos</h3>
-            <p class="text-trust-600 mb-3">CTO</p>
-            <p class="text-gray-600 text-sm">
-              Especialista em arquitetura de software e desenvolvimento de sistemas escaláveis.
-              Responsável pela excelência técnica da plataforma.
-            </p>
-          </div>
 
-          <div v-else class="bg-white rounded-lg p-6 text-center shadow-sm">
-            <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-              </svg>
+            <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+              <div class="w-24 h-24 bg-trust-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <svg class="w-12 h-12 text-trust-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Maria Oliveira</h3>
+              <p class="text-trust-600 mb-3">Head de UX/UI</p>
+              <p class="text-gray-600 text-sm">
+                Designer experiente focada em criar experiências intuitivas e agradáveis.
+                Garante que nossa plataforma seja fácil e prazerosa de usar.
+              </p>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Maria Oliveira</h3>
-            <p class="text-trust-600 mb-3">Head de UX/UI</p>
-            <p class="text-gray-600 text-sm">
-              Designer experiente focada em criar experiências intuitivas e agradáveis.
-              Garante que nossa plataforma seja fácil e prazerosa de usar.
-            </p>
-          </div>
+          </template>
         </div>
       </div>
     </section>
